@@ -32,7 +32,7 @@ async def get_user_data(id: str):
     user = await get_user(id)
     if user:
         return ResponseModel(user, "User returned")
-    return ErrorResponseModel("An error occured", 404, "User does not exist")
+    return ErrorResponseModel("An error occurred", 404, "User does not exist")
 
 
 @router.post("/", response_description="User data added into the database")
