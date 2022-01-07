@@ -4,6 +4,9 @@ from fastapi.encoders import jsonable_encoder
 from server.database import (
     list_users,
     get_user,
+    get_user_by_email,
+    verify_password,
+    create_token,
     add_user,
     update_user,
     delete_user
@@ -12,11 +15,61 @@ from server.database import (
 from server.models import (
     UserModel,
     UpdateUserModel,
+    LoginModel,
+    TokenData,
+    Token,
     ResponseModel,
     ErrorResponseModel
 )
 
 router = APIRouter()
+
+
+@router.post("/register", response_description="User registered")
+async def register(user_data: UserModel = Body(...)):
+    user = jsonable_encoder(user_data)
+
+    email = user["email"]
+    existing_user = await get_user_by_email(email)
+
+    if not existing_user:
+        new_user = await add_user(user)
+        return ResponseModel(new_user, "User added successfully")
+    else:
+        return ErrorResponseModel(
+            "An error occurred",
+            403,
+            "User with such email already exists"
+        )
+
+
+
+@router.post("/login", response_description="User logged in")
+async def login(login_data: LoginModel = Body(...)):
+    user = await get_user_by_email(login_data.email)
+    if user and verify_password(login_data.password, user["password"]):
+        user_data = TokenData(
+            user["name"],
+            user["surname"],
+            user["email"],
+            user["role"],
+        )
+        token = Token(
+            create_token(user),
+            user_data
+        )
+        response = ResponseModel(
+            token,
+            "Logged in successfully"
+        )
+    else:
+        response = ErrorResponseModel(
+            "An error occurred",
+            401,
+            "Invalid email or password"
+        )
+    return response.json()
+
 
 
 @router.get("/", response_description="Users retrieved")
@@ -28,27 +81,27 @@ async def list_users_data():
 
 
 @router.get("/{id}", response_description="User retrieved")
-async def get_user_data(id: str):
-    user = await get_user(id)
+async def get_user_data(user_id: str):
+    user = await get_user(user_id)
     if user:
         return ResponseModel(user, "User returned")
     return ErrorResponseModel("An error occurred", 404, "User does not exist")
 
 
-@router.post("/", response_description="User data added into the database")
-async def add_user_data(user_data: UserModel = Body(...)):
-    user = jsonable_encoder(user_data)
-    new_user = await add_user(user)
-    return ResponseModel(new_user, "User added successfully")
+# @router.post("/", response_description="User data added into the database")
+# async def add_user_data(user_data: UserModel = Body(...)):
+#     user = jsonable_encoder(user_data)
+#     new_user = await add_user(user)
+#     return ResponseModel(new_user, "User added successfully")
 
 
 @router.put("/{id}", response_description="User data updated")
-async def update_user_data(id: str, req: UpdateUserModel = Body(...)):
+async def update_user_data(user_id: str, req: UpdateUserModel = Body(...)):
     req = {x: y for x, y in req.dict().items() if y is not None}
-    updated_user = await update_user(id, req)
+    updated_user = await update_user(user_id, req)
     if updated_user:
         return ResponseModel(
-            "User with ID: {} updated successfully".format(id),
+            "User with ID: {} updated successfully".format(user_id),
             "User updated successfully"
         )
     return ErrorResponseModel(
@@ -59,16 +112,16 @@ async def update_user_data(id: str, req: UpdateUserModel = Body(...)):
 
 
 @router.delete("/{id}", response_description="User deleted from database")
-async def delete_user_data(id: str):
-    deleted_user = await delete_user(id)
+async def delete_user_data(user_id: str):
+    deleted_user = await delete_user(user_id)
     if deleted_user:
         return ResponseModel(
-            "User with ID: {} deleted successfully".format(id),
+            "User with ID: {} deleted successfully".format(user_id),
             "User deleted successfully"
         )
     return ErrorResponseModel(
         "An error occured",
         404,
-        "User with ID: {} does not exist".format(id)
+        "User with ID: {} does not exist".format(user_id)
     )
 

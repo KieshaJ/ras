@@ -13,83 +13,85 @@ QuestionType = Literal[
     "TEXT"
 ]
 
+
+answer_schema_example = {
+    "survey_id": str(ObjectId()),
+    "section_id": str(ObjectId()),
+    "question_id": str(ObjectId()),
+    "title": "Test answer"
+}
+
+
+questions_schema_example = {
+    "survey_id": str(ObjectId()),
+    "section_id": str(ObjectId()),
+    "title": "Test question",
+    "description": "First question of the survey",
+    "question_type": "SINGLE_CHOICE",
+    "answers": [
+        answer_schema_example,
+        answer_schema_example
+    ]
+}
+
+
+section_schema_example = {
+    "survey_id": str(ObjectId()),
+    "name": "Test section",
+    "description": "First section of the survey",
+    "questions": [
+        questions_schema_example
+    ]
+}
+
+
 survey_schema_example = {
     "example": {
-        "name": "Survey 1",
+        "name": "Survey",
         "description": "Example survey",
-        "questions": [
-            {
-                "survey_id": str(ObjectId()),
-                "title": "Test question 1",
-                "description": "First question of the survey",
-                "question_type": "SINGLE_CHOICE",
-                "answers": [
-                    {
-                        "survey_id": str(ObjectId()),
-                        "question_id": str(ObjectId()),
-                        "title": "Test answer 1"
-                    },
-                    {
-                        "survey_id": str(ObjectId()),
-                        "question_id": str(ObjectId()),
-                        "title": "Test answer 2"
-                    }
-                ]
-            }
+        "sections": [
+            section_schema_example
         ]
     }
 }
 
 
 class AnswerModel(BaseModel):
-    survey_id: str
-    question_id: str
+    survey_id: str = ""
+    section_id: str = ""
+    question_id: str = ""
     title: str = Field(...)
 
     class Config:
-        schema_extra = {
-            "example": {
-                "survey_id": str(ObjectId()),
-                "question_id": str(ObjectId()),
-                "title": "Test answer 1"
-            }
-        }
+        schema_extra = answer_schema_example
 
 
 class QuestionModel(BaseModel):
-    survey_id: str
+    survey_id: str = ""
+    section_id: str = ""
     title: str = Field(...)
     description: Optional[str]
     question_type: QuestionType = Field(...)
     answers: List[AnswerModel] = []
 
     class Config:
-        schema_extra = {
-            "example": {
-                "survey_id": str(ObjectId()),
-                "title": "Test question 1",
-                "description": "First question of the survey",
-                "question_type": "SINGLE_CHOICE",
-                "answers": [
-                    {
-                        "survey_id": str(ObjectId()),
-                        "question_id": str(ObjectId()),
-                        "title": "Test answer 1"
-                    },
-                    {
-                        "survey_id": str(ObjectId()),
-                        "question_id": str(ObjectId()),
-                        "title": "Test answer 2"
-                    }
-                ]
-            }
-        }
+        schema_extra = questions_schema_example
+
+
+class SectionModel(BaseModel):
+    survey_id: str = ""
+    name: str = Field(...)
+    description: Optional[str]
+    questions: List[QuestionModel] = []
+
+    class Config:
+        schema_extra = section_schema_example
 
 
 class SurveyModel(BaseModel):
     name: str = Field(...)
     description: Optional[str]
-    questions: List[QuestionModel] = []
+    sections: List[SectionModel] = []
 
     class Config:
         odm_mode = True

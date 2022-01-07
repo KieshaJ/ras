@@ -1,5 +1,11 @@
 from typing import Optional
 from pydantic import BaseModel, EmailStr, Field
+import enum
+
+
+class Role(enum.Enum):
+    OWNER = 1
+    WORKER = 2
 
 
 class UserModel(BaseModel):
@@ -7,6 +13,7 @@ class UserModel(BaseModel):
     surname: str = Field(...)
     email: EmailStr = Field(...)
     password: str = Field(...)
+    role: Role = Field(...)
 
     class Config:
         schema_extra = {
@@ -14,7 +21,8 @@ class UserModel(BaseModel):
                 "name": "Jane",
                 "surname": "Doe",
                 "email": "jane@doe.com",
-                "password": "JDoe123"
+                "password": "JDoe123",
+                "role": "OWNER"
             }
         }
 
@@ -24,6 +32,7 @@ class UpdateUserModel(BaseModel):
     surname: Optional[str]
     email: Optional[EmailStr]
     password: Optional[str]
+    role: Optional[Role]
 
     class Config:
         schema_extra = {
@@ -31,22 +40,62 @@ class UpdateUserModel(BaseModel):
                 "name": "Jane",
                 "surname": "Doe",
                 "email": "jane@doe.com",
-                "password": "JDoe123"
+                "password": "JDoe123",
+                "role": "WORKER"
             }
         }
 
 
-def ResponseModel(data, message):
-    return {
-        "data": [data],
-        "code": 200,
-        "message": message
-    }
+class LoginModel(BaseModel):
+    email: str = Field(...)
+    password: str = Field(...)
 
 
-def ErrorResponseModel(error, code, message):
-    return {
-        "error": error,
-        "code": code,
-        "message": message
-    }
+class TokenData:
+    name: str
+    surname: str
+    email: str
+    role: int
+
+    def __init__(self, name, surname, email, role):
+        self.name = name
+        self.surname = surname
+        self.email = email
+        self.role = role
+
+
+class Token:
+    token: str
+    user: TokenData
+
+    def __init__(self, token, token_data):
+        self.token = token
+        self.user = token_data
+
+
+class ResponseModel:
+    def __init__(self, data, message):
+        self.data = data
+        self.code = 200
+        self.message = message
+
+    def json(self):
+        return {
+            "data": self.data,
+            "code": self.code,
+            "message": self.message
+        }
+
+
+class ErrorResponseModel:
+    def __init__(self, error, code, message):
+        self.error = error
+        self.code = code
+        self.message = message
+
+    def json(self):
+        return {
+            "error": self.error,
+            "code": self.code,
+            "message": self.message
+        }

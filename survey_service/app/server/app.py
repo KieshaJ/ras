@@ -16,4 +16,4 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.include_router(SurveyRouter, tags=["Surveys"], prefix="/surveys")
+app.include_router(SurveyRouter, tags=["Surveys"], prefix="/api/surveys")

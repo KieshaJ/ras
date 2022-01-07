@@ -1,5 +1,3 @@
-import logging
-
 from motor.motor_asyncio import AsyncIOMotorClient
 from bson import ObjectId, DBRef
 
@@ -8,27 +6,44 @@ client = AsyncIOMotorClient(MONGO_URL)
 database = client.ras
 
 survey_collection = database.get_collection("surveys")
+section_collection = database.get_collection("sections")
 question_collection = database.get_collection("questions")
 answer_collection = database.get_collection("answers")
 
 
-def survey_helper(survey) -> dict:
-    questions = []
-    for q in survey["questions"]:
-        questions.append(question_helper(q))
+async def survey_helper(survey: dict) -> dict:
+    sections = []
+    for s in survey["sections"]:
+        sections_doc = await database.dereference(s)
+        sections.append(await section_helper(sections_doc))
 
     return {
         "id": str(survey["_id"]),
-        "name": str(survey["name"]),
-        "description": str(survey["description"]),
+        "name": survey["name"],
+        "description": survey["description"],
+        "sections": sections
+    }
+
+
+async def section_helper(section: dict) -> dict:
+    questions = []
+    for q in section["questions"]:
+        question_doc = await database.dereference(q)
+        questions.append(await question_helper(question_doc))
+
+    return {
+        "id": str(section["_id"]),
+        "name": section["name"],
+        "description": section["description"],
         "questions": questions
     }
 
 
-def question_helper(question) -> dict:
+async def question_helper(question) -> dict:
     answers = []
     for a in question["answers"]:
-        answers.append(answer_helper(a))
+        answer_doc = await database.dereference(a)
+        answers.append(answer_helper(answer_doc))
 
     return {
         "id": str(question["_id"]),
@@ -49,12 +64,12 @@ def answer_helper(answer) -> dict:
     }
 
 
-async def add_answers(data: dict) -> list[dict]:
+async def add_answers(answer_data: dict) -> list[dict]:
     new_answers = []
-    for a in data:
+    for a in answer_data:
         answer = await answer_collection.insert_one(a)
         saved_answer = await answer_collection.find_one({"_id": answer.inserted_id})
-        new_answers.append(answer_helper(saved_answer))
+        new_answers.append(saved_answer)
 
     return new_answers
 
@@ -67,19 +82,19 @@ async def delete_answer():
     pass
 
 
-async def add_questions(data: dict) -> list[dict]:
+async def add_questions(question_data: dict) -> list[dict]:
     new_questions = []
-    for q in data:
-        answers = await add_answers(q["answers"])
+    for q in question_data:
         answer_refs = []
+        answers = await add_answers(q["answers"])
         for a in answers:
-            answer_refs.append(DBRef(collection="answers", id=ObjectId(str(a["id"]))))
+            answer_refs.append(DBRef("answers", id=ObjectId(str(a["_id"]))))
 
-        # data["answers"] = answer_refs
+        q["answers"] = answer_refs
 
         question = await question_collection.insert_one(q)
         saved_question = await question_collection.find_one({"_id": question.inserted_id})
-        new_questions.append(question_helper(saved_question))
+        new_questions.append(saved_question)
 
     return new_questions
 
@@ -92,39 +107,66 @@ async def delete_question():
     pass
 
 
+async def add_sections(section_data: dict) -> list[dict]:
+    new_sections = []
+    for s in section_data:
+        question_refs = []
+        questions = await add_questions(s["questions"])
+        for q in questions:
+            question_refs.append(DBRef(collection="questions", id=ObjectId(str(q["_id"]))))
+
+        s["questions"] = question_refs
+
+        section = await section_collection.insert_one(s)
+        saved_section = await section_collection.find_one({"_id": section.inserted_id})
+        new_sections.append(saved_section)
+
+    return new_sections
+
+
+async def update_section(section_data: dict):
+    pass
+
+
+async def delete_section():
+    pass
+
+
 async def list_surveys():
     surveys = []
     async for survey in survey_collection.find():
-        surveys.append(survey_helper(survey))
+        surveys.append(await survey_helper(survey))
     return surveys
 
 
-async def get_survey(id: str) -> dict:
-    survey = await survey_collection.find_one({"_id": ObjectId(id)})
+async def get_survey(survey_id: str) -> dict:
+    survey = await survey_collection.find_one({"_id": ObjectId(survey_id)})
     if survey:
-        return survey_helper(survey)
+        return await survey_helper(survey)
 
 
-async def add_survey(data: dict) -> dict:
-    questions = await add_questions(data["questions"])
-    question_refs = []
-    for q in questions:
-        question_refs.append(DBRef(collection="questions", id=ObjectId(str(q["id"]))))
+async def add_survey(survey_data: dict) -> dict:
+    sections = await add_sections(survey_data["sections"])
+    section_refs = []
+    for s in sections:
+        section_refs.append(DBRef(collection="sections", id=ObjectId(str(s["_id"]))))
 
-    # data["questions"] = question_refs
+    survey_data["sections"] = section_refs
+    survey_with_refs = survey_data
+    survey_with_refs["sections"] = section_refs
 
-    survey = await survey_collection.insert_one(data)
+    survey = await survey_collection.insert_one(survey_with_refs)
     new_survey = await survey_collection.find_one({"_id": survey.inserted_id})
-    return survey_helper(new_survey)
+    return await survey_helper(new_survey)
 
 
-async def update_survey(id: str, data: dict):
+async def update_survey(survey_id: str, data: dict):
     if len(data) < 1:
         return False
-    survey = survey_collection.find_one({"_id": ObjectId(id)})
+    survey = survey_collection.find_one({"_id": ObjectId(survey_id)})
     if survey:
         updated_survey = await survey_collection.update_one(
-            {"_id": ObjectId(id)},
+            {"_id": ObjectId(survey_id)},
             {"$set": data}
         )
         if updated_survey:
@@ -132,9 +174,9 @@ async def update_survey(id: str, data: dict):
     return False
 
 
-async def delete_survey(id: str):
-    survey = await survey_collection.find_one({"_id": ObjectId(id)})
+async def delete_survey(survey_id: str):
+    survey = await survey_collection.find_one({"_id": ObjectId(survey_id)})
     if survey:
-        await survey_collection.delete_one({"_id": ObjectId(id)})
+        await survey_collection.delete_one({"_id": ObjectId(survey_id)})
         return True
     return False

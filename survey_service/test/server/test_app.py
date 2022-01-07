@@ -28,3 +28,11 @@ def test_delete_survey_success():
 
 def test_delete_survey_failure():
     assert True
+
+
+def test_submit_survey_success():
+    assert True
+
+
+def test_submit_survey_failure():
+    assert True

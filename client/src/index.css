@@ -3,9 +3,180 @@
     margin: 0;
 }
 
+.paper {
+    border: 1px solid #BC8CF2 !important;
+    border-radius: 3px !important;
+    box-shadow: 0 0 3px 3px #EEEEEE;
+}
+
+/* Header components */
 .header {
-    background-color: mediumspringgreen;
+    background-color: #BC8CF2;
     color: white;
     font-size: 32px;
     padding: .5rem;
+}
+
+.header * {
+    display: inline;
+}
+
+.header-profile {
+    float: right;
+}
+
+.header-profile * {
+    display: inline-flex !important;
+    margin: 0 0.5rem !important;
+}
+
+
+/* Auth page components */
+.authContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: calc(100vh - 64px);
+}
+
+.authForm {
+    box-sizing: border-box;
+    width: 600px;
+    height: 500px;
+    padding: 2rem 4rem;
+}
+
+.authForm * {
+    display: block !important;
+    margin: 1rem 0;
+}
+
+
+/* Survey page components */
+.surveyPage {
+    height: calc(100vh - 64px - 48px);
+}
+
+.surveyList {
+    align-items: center;
+    justify-content: center;
+    align-content: center;
+    border-right: 1px solid #EEEEEE;
+    height: 100%;
+    overflow-y: scroll;
+}
+
+.surveyListItem {
+    width: 90%;
+    margin: auto;
+    display: flex;
+    align-items: center;
+}
+
+.surveyListItemActions {
+    width: 55%;
+    text-align: right;
+}
+
+.activeBadge {
+    background-color: #AA14F0;
+    color: #FFFFFF;
+    border-radius: 3px;
+    padding: 0.2rem 0.4rem;
+}
+
+.surveyPanel {
+    height: 100%;
+    overflow-y: scroll;
+    display: flex;
+    /*justify-content: center;*/
+}
+
+.surveyEditor {
+    width: 90%;
+    margin: 0 auto;
+}
+
+.surveyEditor .surveyInputs {
+    width: 600px;
+    margin: auto;
+}
+
+.surveyInput {
+    margin: .5rem 0 !important;
+}
+
+.surveyInput .Mui-focused {
+    color: #BC8CF2 !important;
+}
+
+.surveyInput .Mui-focused * {
+    border-color: #BC8CF2 !important;
+}
+
+.sectionContainer {
+    margin: 1rem auto;
+    width: 70%;
+}
+
+.sectionContent {
+    display: flex !important;
+}
+
+.sectionBtns {
+    margin-right: 2rem;
+}
+
+.toggleExpand {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+}
+
+.activeArrow {
+    transform: rotate(180deg);
+}
+
+.inactiveBadge {
+    color: #000000;
+    border: 1px solid #000000;
+    border-radius: 3px;
+    padding: 0.2rem 0.4rem;
+}
+
+.darkPurpleBtn {
+    color: #AA14F0 !important;
+    border-color: #AA14F0 !important;
+}
+
+.purpleBtn {
+    color: #BC8CF2 !important;
+    border-color: #BC8CF2 !important;
+}
+
+.blackBtn {
+    color: #000000 !important;
+    border-color: #000000 !important;
+}
+
+.grayBtn {
+    color: #EEEEEE !important;;
+    border-color: #EEEEEE !important;
+}
+
+.ml-1 {
+    margin-left: 4rem;
+}
+
+.ml-2 {
+    margin-left: 2rem;
+}
+
+.pageHeader {
+    color: #AA14F0;
+    font-size: 32px !important;
+    padding: .5rem;
+    height: 48px !important;
+    box-sizing: border-box;
+    border-bottom: 1px solid #EEEEEE;
 }
