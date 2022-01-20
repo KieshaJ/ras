@@ -14,6 +14,7 @@ class UserModel(BaseModel):
     email: EmailStr = Field(...)
     password: str = Field(...)
     role: Role = Field(...)
+    company: dict = None
 
     class Config:
         schema_extra = {
@@ -22,7 +23,8 @@ class UserModel(BaseModel):
                 "surname": "Doe",
                 "email": "jane@doe.com",
                 "password": "JDoe123",
-                "role": "OWNER"
+                "role": "OWNER",
+                "company": {}
             }
         }
 

@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Body
 from fastapi.encoders import jsonable_encoder
+import requests
 
 from server.database import (
     list_users,
@@ -19,10 +20,12 @@ from server.models import (
     TokenData,
     Token,
     ResponseModel,
-    ErrorResponseModel
+    ErrorResponseModel,
+    Role
 )
 
 router = APIRouter()
+company_service_url = "http://localhost:8020/api/companies"
 
 
 @router.post("/register", response_description="User registered")
@@ -30,10 +33,22 @@ async def register(user_data: UserModel = Body(...)):
     user = jsonable_encoder(user_data)
 
     email = user["email"]
+    role = user["role"]
+    company_data = None
+
+    if user["company"]:
+        company_data = user["company"]
+
+    del user["company"]
+
     existing_user = await get_user_by_email(email)
 
     if not existing_user:
         new_user = await add_user(user)
+        if role == 1:
+            company_data["ownerId"] = str(new_user["id"])
+            requests.post(company_service_url, json=company_data)
+
         return ResponseModel(new_user, "User added successfully")
     else:
         return ErrorResponseModel(

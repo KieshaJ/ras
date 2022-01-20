@@ -4,7 +4,7 @@ from pydantic import BaseModel, Field
 
 class CompanyModel(BaseModel):
     name: str = Field(...)
-    ownerId: Optional[str]
+    ownerId: str = ""
     workerIds: List[str] = []
 
     class Config:

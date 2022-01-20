@@ -1,11 +1,11 @@
-from typing import Optional, List
+from typing import Optional
 from pydantic import BaseModel, Field
 
 
 class ReviewModel(BaseModel):
     companyId: str = Field(...)
     content: str = Field(...)
-    rating: str
+    rating: int
 
     class Config:
         schema_extra = {}
@@ -14,7 +14,7 @@ class ReviewModel(BaseModel):
 class UpdateReviewModel(BaseModel):
     company: Optional[str]
     content: Optional[str]
-    rating: Optional[str]
+    rating: Optional[int]
 
     class Config:
         schema_extra = {}

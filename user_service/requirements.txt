@@ -4,3 +4,4 @@ email-validator==1.1.1
 motor==2.5.1
 python-jose[cryptography]==3.3.0
 passlib[bcrypt]==1.7.4
+requests==2.27.1

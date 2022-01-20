@@ -160,7 +160,7 @@ async def add_survey(survey_data: dict) -> dict:
     return await survey_helper(new_survey)
 
 
-async def update_survey(survey_id: str, data: dict):
+async def update_survey(survey_id: str, data: dict) -> dict:
     if len(data) < 1:
         return False
     survey = survey_collection.find_one({"_id": ObjectId(survey_id)})
