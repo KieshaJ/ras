@@ -36,8 +36,8 @@ const AuthPage = () => {
         });
     };
 
-    const register = () => {
-    };
+    // const register = () => {
+    // };
 
     return (
         <div className="authContainer">

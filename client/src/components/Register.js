@@ -3,11 +3,8 @@ import {
     Box,
     Button,
     Checkbox,
-    FormControlLabel,
     FormGroup,
     FormLabel,
-    MenuItem,
-    Switch,
     TextField
 } from "@mui/material";
 
@@ -21,16 +18,16 @@ const RegisterComponent = (props) => {
         setRenderCompanyField
     } = props;
 
-    const roles = [
-        {
-            label: "Owner",
-            value: 1
-        },
-        {
-            label: "Worker",
-            value: 2
-        }
-    ];
+    // const roles = [
+    //     {
+    //         label: "Owner",
+    //         value: 1
+    //     },
+    //     {
+    //         label: "Worker",
+    //         value: 2
+    //     }
+    // ];
 
     return (
         <Box
