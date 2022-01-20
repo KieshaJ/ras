@@ -1,0 +1,101 @@
+version: '3.7'
+
+services:
+    client:
+        build: ./client
+        volumes:
+            - ./client/:/app/
+        image: client
+        stdin_open: true
+        tty: true
+        ports:
+            - "3000:3000"
+
+
+    user_service:
+        build: ./user_service
+        volumes:
+            - ./user_service/:/app/
+        image: user_service
+        ports:
+            - "8010:8010"
+        depends_on:
+            - mongo_user_db
+
+    company_service:
+        build: ./company_service
+        volumes:
+            - ./company_service/:/app/
+        image: company_service
+        ports:
+            - "8020:8020"
+        depends_on:
+            - mongo_company_db
+
+    survey_service:
+        build: ./survey_service
+        volumes:
+            - ./survey_service/:/app/
+        image: survey_service
+        ports:
+            - "8030:8030"
+        depends_on:
+            - mongo_survey_db
+#        environment:
+#            - DATABASE_URI=postgresql://movie_db_username:movie_db_password@movie_db/movie_db_dev
+#            - SURVEY_SERVICE_HOST_URL=http://cast_service:8000/api/v1/casts/
+
+    review_service:
+        build: ./review_service
+        volumes:
+            - ./review_service/:/app/
+        image: review_service
+        ports:
+            - "8040:8040"
+        depends_on:
+            - mongo_review_db
+
+
+    mongo_user_db:
+        container_name: mongo_user_db
+        image: mongo:latest
+        ports:
+            - "27018:27017"
+        volumes:
+            - ./data/mongo_user_db:/data/db
+
+
+    mongo_company_db:
+        container_name: mongo_company_db
+        image: mongo:latest
+        ports:
+            - "27019:27017"
+        volumes:
+            - ./data/mongo_company_db:/data/db
+
+
+    mongo_survey_db:
+        container_name: mongo_survey_db
+        image: mongo:latest
+        ports:
+            - "27020:27017"
+        volumes:
+            - ./data/mongo_survey_db:/data/db
+
+
+    mongo_review_db:
+        container_name: mongo_review_db
+        image: mongo:latest
+        ports:
+            - "27021:27017"
+        volumes:
+            - ./data/mongo_review_db:/data/db
+
+
+    nginx:
+        container_name: nginx
+        image: nginx:latest
+        volumes:
+            - ./nginx.conf:/etc/nginx/nginx.conf
+        ports:
+            - "3050:80"
