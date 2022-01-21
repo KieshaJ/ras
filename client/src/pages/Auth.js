@@ -19,19 +19,15 @@ const AuthPage = () => {
             name: ""
         }
     });
-    // const [company, setCompany] = useState({
-    //     name: ""
-    // });
 
     const handleChange = (e, state, setState) => {
-        if(e.target.name === "companyName") {
+        if (e.target.name === "companyName") {
             const newUserCopy = newUser;
             newUserCopy.company.name = e.target.value;
             setState({
                 ...newUserCopy
             });
-        }
-        else {
+        } else {
             setState({
                     ...state,
                     [e.target.name]: e.target.value
@@ -53,7 +49,16 @@ const AuthPage = () => {
     };
 
     const register = () => {
-        axios.post("http://localhost:8010/api/users/register", JSON.stringify(newUser)).then((response) => {
+        const userData = newUser;
+        userData.role = parseInt(userData.role);
+
+        axios.post(
+            "http://localhost:8010/api/users/register",
+            JSON.stringify(userData),
+            {
+                headers: {'Content-Type': 'application/json'}
+            }
+        ).then((response) => {
             console.log(response);
         });
     };
