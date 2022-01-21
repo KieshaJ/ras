@@ -7,6 +7,7 @@ import AuthPage from "./pages/Auth";
 import AdminDashboardPage from "./pages/AdminDashboard";
 
 import {UserContext} from "./context/UserContext";
+import SurveySubmissionPage from "./pages/SurveySubmission";
 
 const getUserLC = () => {
     return {
@@ -15,7 +16,6 @@ const getUserLC = () => {
         name: localStorage.getItem("ras-user-name"),
         surname: localStorage.getItem("ras-user-surname"),
         email: localStorage.getItem("ras-user-email")
-
     };
 };
 
@@ -26,12 +26,12 @@ function App() {
 
     const initUser = () => {
         const userData = getUserLC();
-        if(!userData.token && !["/", "/auth"].includes(window.location.pathname)) {
-            window.location.pathname = "/auth";
-        }
-        else {
+        // if(!userData.token && !["/", "/auth"].includes(window.location.pathname)) {
+        //     window.location.pathname = "/auth";
+        // }
+        // else {
             setUser(userData);
-        }
+        // }
     };
 
     useEffect(() => {
@@ -46,6 +46,7 @@ function App() {
                     <Routes>
                         <Route path="/">
                             <Route path="/" element={<HomePage/>}/>
+                            <Route path="survey/:surveyId" element={<SurveySubmissionPage/>}/>
                             <Route path="dashboard" element={<DashboardPage/>}/>
                             <Route path="auth" element={<AuthPage/>}/>
                             <Route path="admin" element={<AdminDashboardPage/>}/>

@@ -1,52 +1,46 @@
 import React from "react";
-import {Button, TextField, Typography} from "@mui/material";
-import {Add} from "@mui/icons-material";
+import {TextField} from "@mui/material";
 
 const AnswerFormComponent = (props) => {
-    const {question} = props;
+    const {
+        answer,
+        sIndex,
+        qIndex,
+        aIndex,
+        survey,
+        setSurvey
+    } = props;
+
+    const handleChange = (e) => {
+        const surveyCopy = survey;
+        const sectionCopy = surveyCopy.sections[sIndex];
+        const questionCopy = sectionCopy.questions[qIndex];
+        const answerCopy = questionCopy.answers[aIndex];
+
+        answerCopy[e.target.name] = e.target.value;
+        surveyCopy.sections[sIndex].questions[qIndex].answers[aIndex] = answerCopy;
+        setSurvey({
+            ...surveyCopy
+        });
+    };
 
     return (
-        <div>
-            {question.question_type !== "BOOLEAN" ?
-                <div>
-                    <Typography
-                        component="span"
-                        sx={{fontSize: 16}}
-                    >
-                        Atsakymai
-                    </Typography>
-                    <br/>
-                    <Button
-                        variant="outlined"
-                        className="purpleBtn"
-                    >
-                        <Add/>Pridėti atsakymą
-                    </Button>
-                    <hr/>
-
-                    {
-                        question.answers.map((answer, aIndex) => {
-                            return (
-                                <div
-                                    key={`answer-${aIndex}`}
-                                    className="ml-1"
-                                >
-                                    <TextField
-                                        id="title"
-                                        fullWidth
-                                        label="Antraštė"
-                                        className="surveyInput"
-                                        value={answer.title}
-                                        // onChange={(e) => handleChange(e, credentials, setCredentials)}
-                                    />
-                                </div>
-                            );
-                        })
-                    }
-                </div>
-                :
-                null
-            }
+        <div
+            className="ml-1"
+        >
+            <div
+                key={`answer-${aIndex}`}
+                className="ml-1"
+            >
+                <TextField
+                    name="title"
+                    fullWidth
+                    label="Antraštė"
+                    className="surveyInput"
+                    value={answer.title}
+                    onChange={(e) => handleChange(e)}
+                />
+            </div>
         </div>
     );
 };

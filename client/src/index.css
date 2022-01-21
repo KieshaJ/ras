@@ -1,6 +1,7 @@
 * {
     padding: 0;
     margin: 0;
+    font-family: 'Trebuchet MS', sans-serif !important;
 }
 
 .paper {
@@ -30,6 +31,19 @@
     margin: 0 0.5rem !important;
 }
 
+/* Home page components */
+.home {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: calc(100vh - 64px);
+    background: linear-gradient(0deg, #EEEEEE, #BC8CF2);
+}
+
+.home h1, .home .homeButtons {
+    text-align: center;
+    margin: 1rem;
+}
 
 /* Auth page components */
 .authContainer {
@@ -179,4 +193,8 @@
     height: 48px !important;
     box-sizing: border-box;
     border-bottom: 1px solid #EEEEEE;
+}
+
+.fullWidth {
+    width: 100%;
 }

@@ -24,8 +24,8 @@ const ProfileComponent = () => {
         <div>
             {!loggedIn ?
                 <div className="header-profile">
-                    <Button variant="contained" color="success" onClick={() => setLoggedIn(true)}>Login</Button>
-                    <Button variant="outlined" color="success">Register</Button>
+                    <Button variant="contained" color="success" onClick={() => setLoggedIn(true)}>PRISIJUNGTI</Button>
+                    <Button variant="outlined" color="success">REGISTRUOTIS</Button>
                 </div>
                 :
                 <div className="header-profile">

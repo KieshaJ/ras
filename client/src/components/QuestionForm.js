@@ -1,11 +1,15 @@
 import React from "react";
-import {MenuItem, TextField, Typography} from "@mui/material";
+import {Button, MenuItem, TextField, Typography} from "@mui/material";
 import AnswerForm from "./AnswerForm";
+import {Add} from "@mui/icons-material";
 
 const QuestionFormComponent = (props) => {
     const {
         question,
-        qIndex
+        sIndex,
+        qIndex,
+        survey,
+        setSurvey
     } = props;
 
     const questionTypes = [
@@ -23,6 +27,18 @@ const QuestionFormComponent = (props) => {
         }
     ];
 
+    const handleChange = (e) => {
+        const surveyCopy = survey;
+        const sectionCopy = surveyCopy.sections[sIndex];
+        const questionCopy = sectionCopy.questions[qIndex];
+
+        questionCopy[e.target.name] = e.target.value;
+        surveyCopy.sections[sIndex].questions[qIndex] = questionCopy;
+        setSurvey({
+            ...surveyCopy
+        });
+    };
+
     return (
         <div
             key={`question-${qIndex}`}
@@ -36,32 +52,32 @@ const QuestionFormComponent = (props) => {
             </Typography>
 
             <TextField
-                id="name"
+                name="title"
                 fullWidth
                 label="Pavadinimas"
                 className="surveyInput"
                 value={question.title}
-                // onChange={(e) => handleChange(e, credentials, setCredentials)}
+                onChange={(e) => handleChange(e)}
             />
             <TextField
-                id="description"
+                name="description"
                 fullWidth
-                multiline
+                // multiline
                 label="Aprašymas"
                 className="surveyInput"
                 value={question.description}
-                // onChange={(e) => handleChange(e, credentials, setCredentials)}
+                onChange={(e) => handleChange(e)}
             />
 
             <TextField
-                id="question_type"
+                name="question_type"
                 fullWidth
                 variant="outlined"
                 select label="Klausimo tipas"
                 helperText="Pasirinkite klausimo tipą"
                 className="surveyInput"
                 value={question.question_type}
-                // onChange={(e) => handleChange(e, newUser, setNewUser)}
+                onChange={(e) => handleChange(e)}
             >
                 {questionTypes.map((questionType) => (
                     <MenuItem key={`qt-${questionType.value}`}
@@ -71,7 +87,33 @@ const QuestionFormComponent = (props) => {
                 ))}
             </TextField>
 
-            <AnswerForm question={question}/>
+            <Typography
+                component="span"
+                sx={{fontSize: 16}}
+            >
+                Atsakymai
+            </Typography>
+            <br/>
+            <Button
+                variant="outlined"
+                className="purpleBtn"
+            >
+                <Add/>Pridėti atsakymą
+            </Button>
+            <hr/>
+            {question.answers.map((answer, aIndex) => {
+                return (
+                    <AnswerForm
+                        key={`a-${aIndex}`}
+                        answer={answer}
+                        sIndex={sIndex}
+                        qIndex={qIndex}
+                        aIndex={aIndex}
+                        survey={survey}
+                        setSurvey={setSurvey}
+                    />
+                );
+            })}
         </div>
     );
 };
