@@ -2,9 +2,9 @@ import React from "react";
 import {
     Box,
     Button,
-    Checkbox,
-    FormGroup,
-    FormLabel,
+    InputLabel,
+    MenuItem,
+    Select,
     TextField
 } from "@mui/material";
 
@@ -12,22 +12,10 @@ const RegisterComponent = (props) => {
     const {
         newUser,
         setNewUser,
+        register,
         handleChange,
         setLoginMode,
-        renderCompanyField,
-        setRenderCompanyField
     } = props;
-
-    // const roles = [
-    //     {
-    //         label: "Owner",
-    //         value: 1
-    //     },
-    //     {
-    //         label: "Worker",
-    //         value: 2
-    //     }
-    // ];
 
     return (
         <Box
@@ -65,28 +53,32 @@ const RegisterComponent = (props) => {
                 value={newUser.password}
                 onChange={(e) => handleChange(e, newUser, setNewUser)}
             />
-            <FormGroup>
-                <FormLabel
-                    label="Label"
-                />
-                <Checkbox
-                    checked={renderCompanyField}
-                    onChange={() => setRenderCompanyField(!renderCompanyField)}
-                    inputProps={{ 'aria-label': 'controlled' }}
-                />
-            </FormGroup>
-            {renderCompanyField ?
-                <TextField
-                    name="companyName"
-                    variant="outlined"
-                    label="Company name"
-                    value={newUser.companyName}
-                    onChange={(e) => handleChange(e, newUser, setNewUser)}
-                />
-                :
-                null
+
+            <InputLabel id="demo-simple-select-label">Choose your role:</InputLabel>
+            <Select
+                name="role"
+                value={newUser.role}
+                label="Role"
+                onChange={(e) => handleChange(e, newUser, setNewUser)}
+            >
+                <MenuItem value="Role" disabled>Role</MenuItem>
+                <MenuItem value="1">Owner</MenuItem>
+                <MenuItem value="2">Worker</MenuItem>
+            </Select>
+
+            {
+                newUser.role === "1" ?
+                    <TextField
+                        name="companyName"
+                        variant="outlined"
+                        label="Company name"
+                        value={newUser.company.name}
+                        onChange={(e) => handleChange(e, newUser, setNewUser)}
+                    />
+                    : null
             }
-            <Button variant="contained" onClick={() => console.log(newUser)}>Register</Button>
+
+            <Button variant="contained" onClick={() => register()}>Register</Button>
             <span>Already registered? <a href="#" onClick={() => setLoginMode(true)}>Login here</a></span>
         </Box>
     );

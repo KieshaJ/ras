@@ -6,24 +6,40 @@ import RegisterComponent from "../components/Register";
 const AuthPage = () => {
     const [loginMode, setLoginMode] = useState(false);
     const [credentials, setCredentials] = useState({
-        email: undefined,
-        password: undefined
+        email: "",
+        password: ""
     });
     const [newUser, setNewUser] = useState({
-        name: undefined,
-        surname: undefined,
-        email: undefined,
-        password: undefined,
-        role: 2,
-        companyName: undefined
+        name: "",
+        surname: "",
+        email: "",
+        password: "",
+        role: "",
+        company: {
+            name: ""
+        }
     });
-    const [renderCompanyField, setRenderCompanyField] = useState(newUser.role === 1);
+    // const [company, setCompany] = useState({
+    //     name: ""
+    // });
 
     const handleChange = (e, state, setState) => {
-        const stateCopy = state;
-        stateCopy[e.target.name] = e.target.value;
-        setState(stateCopy);
+        if(e.target.name === "companyName") {
+            const newUserCopy = newUser;
+            newUserCopy.company.name = e.target.value;
+            setState({
+                ...newUserCopy
+            });
+        }
+        else {
+            setState({
+                    ...state,
+                    [e.target.name]: e.target.value
+                }
+            );
+        }
     };
+
 
     const login = () => {
         axios.post("http://localhost:8010/api/users/login", credentials).then((response) => {
@@ -36,8 +52,12 @@ const AuthPage = () => {
         });
     };
 
-    // const register = () => {
-    // };
+    const register = () => {
+        axios.post("http://localhost:8010/api/users/register", JSON.stringify(newUser)).then((response) => {
+            console.log(response);
+        });
+    };
+
 
     return (
         <div className="authContainer">
@@ -53,10 +73,9 @@ const AuthPage = () => {
                 <RegisterComponent
                     newUser={newUser}
                     setNewUser={setNewUser}
+                    register={register}
                     handleChange={handleChange}
                     setLoginMode={setLoginMode}
-                    renderCompanyField={renderCompanyField}
-                    setRenderCompanyField={setRenderCompanyField}
                 />
             }
         </div>
