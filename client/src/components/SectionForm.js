@@ -6,11 +6,23 @@ import QuestionFormComponent from "./QuestionForm";
 const SectionComponent = (props) => {
     const {
         survey,
+        setSurvey,
         section,
         sIndex,
         activeSection,
         setActiveSection
     } = props;
+
+    const handleChange = (e) => {
+        const surveyCopy = survey;
+        const sectionCopy = surveyCopy.sections[sIndex];
+
+        sectionCopy[e.target.name] = e.target.value;
+        surveyCopy.sections[sIndex] = sectionCopy;
+        setSurvey({
+            ...surveyCopy
+        });
+    };
 
     return (
         <Card
@@ -57,21 +69,21 @@ const SectionComponent = (props) => {
                 <CardContent>
                     <div className="surveyInputs">
                         <TextField
-                            id="name"
+                            name="name"
                             fullWidth
                             label="Pavadinimas"
                             className="surveyInput"
                             value={section.name}
-                            // onChange={(e) => handleChange(e, credentials, setCredentials)}
+                            onChange={(e) => handleChange(e)}
                         />
                         <TextField
-                            id="description"
+                            name="description"
                             fullWidth
                             multiline
                             label="Aprašymas"
                             className="surveyInput"
                             value={section.description}
-                            // onChange={(e) => handleChange(e, credentials, setCredentials)}
+                            onChange={(e) => handleChange(e)}
                         />
 
                         <Typography
@@ -91,9 +103,12 @@ const SectionComponent = (props) => {
                         {section.questions.map((question, qIndex) => {
                             return (
                                 <QuestionFormComponent
-                                    key={qIndex}
+                                    key={`q-${qIndex}`}
                                     question={question}
+                                    sIndex={sIndex}
                                     qIndex={qIndex}
+                                    survey={survey}
+                                    setSurvey={setSurvey}
                                 />
                             );
                         })}

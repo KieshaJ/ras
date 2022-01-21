@@ -29,6 +29,14 @@ const SurveyPageComponent = () => {
         setMode(2);
     };
 
+    const handleChange = (e) => {
+        const surveyCopy = survey;
+        surveyCopy[e.target.name] = e.target.value;
+        setSurvey({
+            ...surveyCopy
+        });
+    };
+
     useEffect(() => {
         getSurveyList();
     }, []);
@@ -83,21 +91,21 @@ const SurveyPageComponent = () => {
                     >
                         <div className="surveyInputs">
                             <TextField
-                                id="name"
+                                name="name"
                                 fullWidth
                                 label="Pavadinimas"
                                 className="surveyInput"
                                 value={survey.name}
-                                // onChange={(e) => handleChange(e, credentials, setCredentials)}
+                                onChange={(e) => handleChange(e)}
                             />
                             <TextField
-                                id="description"
+                                name="description"
                                 fullWidth
                                 multiline
                                 label="Aprašymas"
                                 className="surveyInput"
                                 value={survey.description}
-                                // onChange={(e) => handleChange(e, credentials, setCredentials)}
+                                onChange={(e) => handleChange(e)}
                             />
 
                             <Button
@@ -110,8 +118,9 @@ const SurveyPageComponent = () => {
                         {survey.sections.map((section, sIndex) => {
                             return (
                                 <SectionComponent
-                                    key={sIndex}
+                                    key={`s-${sIndex}`}
                                     survey={survey}
+                                    setSurvey={setSurvey}
                                     section={section}
                                     sIndex={sIndex}
                                     activeSection={activeSection}
