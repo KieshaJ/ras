@@ -2,14 +2,11 @@ import React, {useEffect, useState} from "react";
 import axios from "axios";
 import {
     Box,
-    Button,
     Grid,
-    TextField,
     Typography
 } from "@mui/material";
-import {Add} from "@mui/icons-material";
-import SectionComponent from "./SectionForm";
 import SurveyListItemComponent from "./SurveyListItem";
+import SurveyFormComponent from "./SurveyForm";
 
 
 const SurveyPageComponent = () => {
@@ -27,14 +24,6 @@ const SurveyPageComponent = () => {
     const editMode = (selected) => {
         setSurvey(selected);
         setMode(2);
-    };
-
-    const handleChange = (e) => {
-        const surveyCopy = survey;
-        surveyCopy[e.target.name] = e.target.value;
-        setSurvey({
-            ...surveyCopy
-        });
     };
 
     useEffect(() => {
@@ -85,50 +74,12 @@ const SurveyPageComponent = () => {
                 {/*    null*/}
                 {/*}*/}
                 {mode === 2 ?
-                    <Box
-                        component="div"
-                        className="surveyEditor"
-                    >
-                        <div className="surveyInputs">
-                            <TextField
-                                name="name"
-                                fullWidth
-                                label="Pavadinimas"
-                                className="surveyInput"
-                                value={survey.name}
-                                onChange={(e) => handleChange(e)}
-                            />
-                            <TextField
-                                name="description"
-                                fullWidth
-                                multiline
-                                label="Aprašymas"
-                                className="surveyInput"
-                                value={survey.description}
-                                onChange={(e) => handleChange(e)}
-                            />
-
-                            <Button
-                                variant="outlined"
-                                className="darkPurpleBtn"
-                            >
-                                <Add/>Pridėti skyrių
-                            </Button>
-                        </div>
-                        {survey.sections.map((section, sIndex) => {
-                            return (
-                                <SectionComponent
-                                    key={`s-${sIndex}`}
-                                    survey={survey}
-                                    setSurvey={setSurvey}
-                                    section={section}
-                                    sIndex={sIndex}
-                                    activeSection={activeSection}
-                                    setActiveSection={setActiveSection}
-                                />
-                            );
-                        })}
-                    </Box>
+                    <SurveyFormComponent
+                        survey={survey}
+                        setSurvey={setSurvey}
+                        activeSection={activeSection}
+                        setActiveSection={setActiveSection}
+                    />
                     :
                     null
                 }

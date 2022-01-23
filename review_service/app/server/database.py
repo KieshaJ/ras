@@ -11,10 +11,15 @@ review_collection = database.get_collection("reviews")
 async def review_helper(review: dict) -> dict:
     return {
         "id": str(review["_id"]),
-        "companyId": review["companyId"],
+        "company_id": review["company_id"],
         "content": review["content"],
         "rating": review["rating"]
     }
+
+
+async def list_reviews(company_id: str) -> list[dict]:
+    reviews = await review_collection.find({"company_id": company_id})
+    return [await review_helper(r) for r in reviews]
 
 
 async def get_review(review_id: str) -> dict:

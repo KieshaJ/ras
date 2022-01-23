@@ -10,6 +10,9 @@ section_collection = database.get_collection("sections")
 question_collection = database.get_collection("questions")
 answer_collection = database.get_collection("answers")
 
+survey_statistics_collection = database.get_collection("survey_statistics")
+answer_statistics_collection = database.get_collection("answer_statistics")
+
 
 async def survey_helper(survey: dict) -> dict:
     sections = []
@@ -19,9 +22,11 @@ async def survey_helper(survey: dict) -> dict:
 
     return {
         "id": str(survey["_id"]),
+        # "company_id": survey["company_id"],
         "name": survey["name"],
         "description": survey["description"],
-        "sections": sections
+        "sections": sections,
+        # "active": survey["active"]
     }
 
 
@@ -69,6 +74,7 @@ async def add_answers(answer_data: dict) -> list[dict]:
     for a in answer_data:
         answer = await answer_collection.insert_one(a)
         saved_answer = await answer_collection.find_one({"_id": answer.inserted_id})
+        await add_answer_statistic(str(saved_answer["_id"]))
         new_answers.append(saved_answer)
 
     return new_answers
@@ -157,10 +163,11 @@ async def add_survey(survey_data: dict) -> dict:
 
     survey = await survey_collection.insert_one(survey_with_refs)
     new_survey = await survey_collection.find_one({"_id": survey.inserted_id})
+    await add_survey_statistic(str(new_survey["_id"]))
     return await survey_helper(new_survey)
 
 
-async def update_survey(survey_id: str, data: dict) -> dict:
+async def update_survey(survey_id: str, data: dict) -> bool:
     if len(data) < 1:
         return False
     survey = survey_collection.find_one({"_id": ObjectId(survey_id)})
@@ -178,5 +185,45 @@ async def delete_survey(survey_id: str):
     survey = await survey_collection.find_one({"_id": ObjectId(survey_id)})
     if survey:
         await survey_collection.delete_one({"_id": ObjectId(survey_id)})
+        return True
+    return False
+
+
+async def add_survey_statistic(survey_id: str):
+    statistic = {
+        "survey_id": survey_id,
+        "submitted": 0
+    }
+    await survey_statistics_collection.insert_one(statistic)
+
+
+async def update_survey_statistic(survey_id: str) -> bool:
+    statistic = await survey_statistics_collection.find_one({"survey_id": survey_id})
+    statistic["submitted"] += 1
+    updated_statistic = await survey_statistics_collection.update_one(
+        {"survey_id": survey_id},
+        {"$set": statistic}
+    )
+    if updated_statistic:
+        return True
+    return False
+
+
+async def add_answer_statistic(answer_id: str):
+    statistic = {
+        "answer_id": answer_id,
+        "submitted": 0
+    }
+    await answer_statistics_collection.insert_one(statistic)
+
+
+async def update_answer_statistic(answer_id: str) -> bool:
+    statistic = await answer_statistics_collection.find_one({"answer_id": answer_id})
+    statistic["submitted"] += 1
+    updated_statistic = await answer_statistics_collection.update_one(
+        {"answer_id": answer_id},
+        {"$set": statistic}
+    )
+    if updated_statistic:
         return True
     return False

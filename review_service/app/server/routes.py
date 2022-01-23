@@ -2,6 +2,7 @@ from fastapi import APIRouter, Body
 from fastapi.encoders import jsonable_encoder
 
 from server.database import (
+    list_reviews,
     add_review,
     update_review,
     get_review,
@@ -16,6 +17,20 @@ from server.models import (
 )
 
 router = APIRouter()
+
+
+@router.get("/list/{company_id}")
+async def get_review_data_list(company_id: str):
+    reviews = list_reviews(company_id)
+    if reviews:
+        response = ResponseModel(reviews, "Reviews returned")
+    else:
+        response = ErrorResponseModel(
+            "An error occurred",
+            404,
+            "No reviews with company ID: {} exist".format(company_id)
+        )
+    return response.json()
 
 
 @router.get("/{id}", response_description="Review retrieved")
@@ -41,7 +56,7 @@ async def add_review_data(review_data: ReviewModel = Body(...)):
 
 
 @router.put("/{id}", response_description="Review data updated")
-async def update_comapny_data(id: str, review_data: UpdateReviewModel = Body(...)):
+async def update_review_data(id: str, review_data: UpdateReviewModel = Body(...)):
     req = {x: y for x, y in review_data.dict().items() if y is not None}
     updated_review = await update_review(id, req)
     if updated_review:

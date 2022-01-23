@@ -21,65 +21,92 @@ const RegisterComponent = (props) => {
         <Box
             component="form"
             noValidate
-            autoComplete="off"
-            className="authForm paper"
+            autoCompplete="off"
+            className="authForm2 paper"
         >
-            <TextField
-                name="name"
-                variant="outlined"
-                label="Name"
-                value={newUser.name}
-                onChange={(e) => handleChange(e, newUser, setNewUser)}
-            />
-            <TextField
-                name="surname"
-                variant="outlined"
-                label="Surname"
-                value={newUser.surname}
-                onChange={(e) => handleChange(e, newUser, setNewUser)}
-            />
-            <TextField
-                name="email"
-                variant="outlined"
-                label="Email"
-                value={newUser.email}
-                onChange={(e) => handleChange(e, newUser, setNewUser)}
-            />
-            <TextField
-                name="password"
-                variant="outlined"
-                type="password"
-                label="Password"
-                value={newUser.password}
-                onChange={(e) => handleChange(e, newUser, setNewUser)}
-            />
+            <div className="surveyInputs">
+                <TextField
+                    name="name"
+                    fullWidth
+                    label="Vardas"
+                    className="surveyInput"
+                    value={newUser.name}
+                    onChange={(e) => handleChange(e, newUser, setNewUser)}
+                />
+                <TextField
+                    name="surname"
+                    fullWidth
+                    className="surveyInput"
+                    label="Pavarde"
+                    value={newUser.surname}
+                    onChange={(e) => handleChange(e, newUser, setNewUser)}
+                />
+                <TextField
+                    name="email"
+                    fullWidth
+                    className="surveyInput"
+                    label="El. pastas"
+                    value={newUser.email}
+                    onChange={(e) => handleChange(e, newUser, setNewUser)}
+                />
+                <TextField
+                    name="password"
+                    fullWidth
+                    className="surveyInput"
+                    type="password"
+                    label="Slaptazodis"
+                    value={newUser.password}
+                    onChange={(e) => handleChange(e, newUser, setNewUser)}
+                />
 
-            <InputLabel id="demo-simple-select-label">Choose your role:</InputLabel>
-            <Select
-                name="role"
-                value={newUser.role}
-                label="Role"
-                onChange={(e) => handleChange(e, newUser, setNewUser)}
-            >
-                <MenuItem value="Role" disabled>Role</MenuItem>
-                <MenuItem value="1">Owner</MenuItem>
-                <MenuItem value="2">Worker</MenuItem>
-            </Select>
+                <InputLabel id="demo-simple-select-label">Issirinkite role:</InputLabel>
+                <TextField
+                    select
+                    name="role"
+                    value={newUser.role}
+                    label="Role"
+                    fullWidth
+                    className="surveyInput"
+                    onChange={(e) => handleChange(e, newUser, setNewUser)}
+                >
+                    <MenuItem value="Role" disabled>Role</MenuItem>
+                    <MenuItem value="1">Vadovas</MenuItem>
+                    <MenuItem value="2">Darbuotojas</MenuItem>
+                </TextField>
 
-            {
-                newUser.role === "1" ?
-                    <TextField
-                        name="companyName"
-                        variant="outlined"
-                        label="Company name"
-                        value={newUser.company.name}
-                        onChange={(e) => handleChange(e, newUser, setNewUser)}
-                    />
-                    : null
-            }
+                {
+                    newUser.role === "1" ?
+                        <TextField
+                            name="companyName"
+                            fullWidth
+                            className="surveyInput"
+                            label="Imones pavadinimas"
+                            value={newUser.company.name}
+                            onChange={(e) => handleChange(e, newUser, setNewUser)}
+                        />
+                        : null
+                }
+            </div>
 
-            <Button variant="contained" onClick={() => register()}>Register</Button>
-            <span>Already registered? <a href="#" onClick={() => setLoginMode(true)}>Login here</a></span>
+            <div className="authButtons">
+                <Button
+                    variant="contained"
+                    className="darkPurpleContainedBtn"
+                    onClick={() => register()}
+                >
+                    Registruotis
+                </Button>
+                <div className="textLink">
+                    <div>Jau turite paskyra? </div>
+                    <a
+                        href="#"
+                        className="darkPurpleBtn"
+                        onClick={() => setLoginMode(true)}
+                    >
+                        Prisijunkite cia
+                    </a>
+                </div>
+            </div>
         </Box>
     );
 };

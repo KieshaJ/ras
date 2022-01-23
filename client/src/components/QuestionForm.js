@@ -54,7 +54,7 @@ const QuestionFormComponent = (props) => {
             <TextField
                 name="title"
                 fullWidth
-                label="Pavadinimas"
+                label="Antraštė"
                 className="surveyInput"
                 value={question.title}
                 onChange={(e) => handleChange(e)}

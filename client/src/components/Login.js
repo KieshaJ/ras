@@ -19,21 +19,41 @@ const LoginComponent = (props) => {
         >
             <TextField
                 name="email"
-                variant="outlined"
-                label="Email"
+                fullWidth
+                className="surveyInput"
+                label="El. pastas"
                 value={credentials.email}
                 onChange={(e) => handleChange(e, credentials, setCredentials)}
             />
             <TextField
                 name="password"
-                variant="outlined"
+                fullWidth
+                className="surveyInput"
                 type="password"
-                label="Password"
+                label="Slaptazodis"
                 value={credentials.password}
                 onChange={(e) => handleChange(e, credentials, setCredentials)}
             />
-            <Button variant="contained" onClick={login}>Login</Button>
-            <span>Do not have an account? <a href="#" onClick={() => setLoginMode(false)}>Register here</a></span>
+
+            <div className="authButtons">
+                <Button
+                    variant="contained"
+                    className="darkPurpleContainedBtn"
+                    onClick={login}
+                >
+                    Prisijungti
+                </Button>
+                <div className="textLink">
+                    <div>Neturite paskyros? </div>
+                    <a
+                        href="#"
+                        className="darkPurpleBtn"
+                        onClick={() => setLoginMode(false)}
+                    >
+                        Registruokites cia
+                    </a>
+                </div>
+            </div>
         </Box>
     );
 };

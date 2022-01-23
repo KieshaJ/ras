@@ -6,12 +6,15 @@ from server.database import (
     get_survey,
     add_survey,
     update_survey,
-    delete_survey
+    delete_survey,
+    update_survey_statistic,
+    update_answer_statistic
 )
 
 from server.models import (
     SurveyModel,
     UpdateSurveyModel,
+    SurveySubmitModel,
     ResponseModel,
     ErrorResponseModel
 )
@@ -83,5 +86,17 @@ async def delete_survey_data(id: str):
             404,
             "Survey with ID: {} does not exist".format(id)
         )
+    return response.json()
+
+
+@router.post("/submit/{survey_id}", response_description="Survey submitted")
+async def submit_survey(survey_id: str, data: SurveySubmitModel = Body(...)):
+    await update_survey_statistic(survey_id)
+    for a in data.answer_ids:
+        await update_answer_statistic(a)
+    response = ResponseModel(
+        "Survey with ID: {} submitted successfully".format(survey_id),
+        "Survey submitted successfully"
+    )
     return response.json()
 

@@ -2,6 +2,7 @@ from fastapi import APIRouter, Body
 from fastapi.encoders import jsonable_encoder
 
 from server.database import (
+    list_companies,
     add_company,
     update_company,
     get_company,
@@ -16,6 +17,13 @@ from server.models import (
 )
 
 router = APIRouter()
+
+
+@router.get("/", response_description="Company list retrieved")
+async def get_company_data_list():
+    company_list = await list_companies()
+    response = ResponseModel(company_list, "Company list returned")
+    return response.json()
 
 
 @router.get("/{id}", response_description="Company retrieved")

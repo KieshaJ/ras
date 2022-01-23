@@ -17,6 +17,12 @@ async def company_helper(company: dict) -> dict:
     }
 
 
+async def list_companies() -> list[dict]:
+    companies = await company_collection.find().to_list(10000)
+    company_list = [await company_helper(c) for c in companies]
+    return company_list
+
+
 async def get_company(company_id: str) -> dict:
     company = await company_collection.find_one({"_id": ObjectId(company_id)})
     if company:

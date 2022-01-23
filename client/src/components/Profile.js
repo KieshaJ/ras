@@ -11,7 +11,7 @@ const ProfileComponent = () => {
     const userData = userContext.user;
 
     const init = () => {
-        if(userData && userData.token) {
+        if (userData && userData.token) {
             setLoggedIn(true);
         }
     };
@@ -24,8 +24,13 @@ const ProfileComponent = () => {
         <div>
             {!loggedIn ?
                 <div className="header-profile">
-                    <Button variant="contained" color="success" onClick={() => setLoggedIn(true)}>PRISIJUNGTI</Button>
-                    <Button variant="outlined" color="success">REGISTRUOTIS</Button>
+                    <Button
+                        variant="contained"
+                        color="success"
+                        onClick={() => {window.location.pathname = "auth"}}
+                    >
+                        PRISIJUNGTI
+                    </Button>
                 </div>
                 :
                 <div className="header-profile">

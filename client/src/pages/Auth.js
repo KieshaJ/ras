@@ -1,10 +1,11 @@
-import React, {useState} from "react";
+import React, {useContext, useState} from "react";
 import axios from "axios";
 import LoginComponent from "../components/Login";
 import RegisterComponent from "../components/Register";
+import {MessageContext} from "../context/MessageContext";
 
 const AuthPage = () => {
-    const [loginMode, setLoginMode] = useState(false);
+    const [loginMode, setLoginMode] = useState(true);
     const [credentials, setCredentials] = useState({
         email: "",
         password: ""
@@ -19,6 +20,8 @@ const AuthPage = () => {
             name: ""
         }
     });
+
+    const messageContext = useContext(MessageContext);
 
     const handleChange = (e, state, setState) => {
         if (e.target.name === "companyName") {
@@ -45,6 +48,8 @@ const AuthPage = () => {
             localStorage.setItem("ras-user-name", data.user.name);
             localStorage.setItem("ras-user-surname", data.user.surname);
             localStorage.setItem("ras-user-role", data.user.role);
+
+            window.location.pathname = "dashboard";
         });
     };
 
@@ -58,14 +63,22 @@ const AuthPage = () => {
             {
                 headers: {'Content-Type': 'application/json'}
             }
-        ).then((response) => {
-            console.log(response);
+        ).then(() => {
+                        messageContext.setMessage("Ya fookin yeet");
+            setLoginMode(true);
         });
     };
 
 
     return (
         <div className="authContainer">
+            <h1 className="authHeading">
+                {loginMode ?
+                    "Prisijungimas"
+                    :
+                    "Registracija"
+                }
+            </h1>
             {loginMode ?
                 <LoginComponent
                     credentials={credentials}

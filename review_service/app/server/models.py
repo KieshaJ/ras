@@ -3,7 +3,7 @@ from pydantic import BaseModel, Field
 
 
 class ReviewModel(BaseModel):
-    companyId: str = Field(...)
+    company_id: str = Field(...)
     content: str = Field(...)
     rating: int
 

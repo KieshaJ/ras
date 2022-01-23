@@ -90,8 +90,10 @@ class SectionModel(BaseModel):
 
 class SurveyModel(BaseModel):
     name: str = Field(...)
+    company_id: str = Field(...)
     description: Optional[str]
     sections: List[SectionModel] = []
+    active: bool = False
 
     class Config:
         odm_mode = True
@@ -102,11 +104,27 @@ class SurveyModel(BaseModel):
 
 class UpdateSurveyModel(BaseModel):
     name: Optional[str]
+    company_id: Optional[str]
     description: Optional[str]
     questions: Optional[List[QuestionModel]]
+    active: Optional[bool]
 
     class Config:
         schema_extra = survey_schema_example
+
+
+class SurveySubmitModel(BaseModel):
+    answer_ids: list[str]
+
+
+class SurveyStatistic(BaseModel):
+    survey_id: str
+    submitted: int
+
+
+class AnswerStatistic(BaseModel):
+    answer_id: str
+    submitted: int
 
 
 class ResponseModel:
