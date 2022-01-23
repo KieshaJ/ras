@@ -9,12 +9,13 @@ const AlertComponent = () => {
     useEffect(() => {
         setTimeout(() => {
             messageContext.setMessage("");
+            localStorage.removeItem("ras-message");
         }, 5000);
     });
 
     return (message !== "" ?
             <Alert
-                className="alert"
+                className="alert paper"
             >
                 {message}
             </Alert>

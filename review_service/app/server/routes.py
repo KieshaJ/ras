@@ -21,7 +21,7 @@ router = APIRouter()
 
 @router.get("/list/{company_id}")
 async def get_review_data_list(company_id: str):
-    reviews = list_reviews(company_id)
+    reviews = await list_reviews(company_id)
     if reviews:
         response = ResponseModel(reviews, "Reviews returned")
     else:

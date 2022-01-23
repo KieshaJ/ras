@@ -18,7 +18,7 @@ async def review_helper(review: dict) -> dict:
 
 
 async def list_reviews(company_id: str) -> list[dict]:
-    reviews = await review_collection.find({"company_id": company_id})
+    reviews = await review_collection.find({"company_id": company_id}).to_list(10000)
     return [await review_helper(r) for r in reviews]
 
 

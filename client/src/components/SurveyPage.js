@@ -32,7 +32,10 @@ const SurveyPageComponent = () => {
 
     return (
         <Grid container spacing={2} className="surveyPage">
-            <Grid item xs={4} className="pageHeader"/>
+            <Grid item xs={4} className="pageHeader">
+                <a>Restoranas</a>
+                <a>Ataskaitos</a>
+            </Grid>
             <Grid item xs={8} className="pageHeader">
                 <Typography component="h1">
                     Apklausos

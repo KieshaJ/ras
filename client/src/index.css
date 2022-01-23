@@ -294,10 +294,16 @@
     width: 300px;
     position: absolute;
     top: 4rem;
-    left: 0;
-    right: 0;
+    right: 3rem;
     margin-left: auto !important;
     margin-right: auto !important;
+    z-index: 10000 !important;
+    background-color: #BC8CF2 !important;
+    color: #AA14F0 !important;
+}
+
+.alert * {
+    color: #AA14F0 !important;
 }
 
 /* Review page components */
@@ -328,4 +334,28 @@
     position: relative;
     overflow-y: scroll;
     border-color: #AA14F0 !important;
+}
+
+.reviewForm {
+    padding: 1rem 2rem;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+}
+
+.reviewItem {
+    padding: 1rem 2rem;
+    margin-top: 1rem;
+}
+
+.reviewBackLink {
+    position: absolute;
+    top: .5rem;
+    right: 3rem;
+}
+
+.homeModal {
+    width: 600px;
+    padding: 1.5rem 3rem;
+    background-color: #EEEEEE;
+    margin: 40vh auto 0;
 }

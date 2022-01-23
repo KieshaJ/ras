@@ -35,10 +35,16 @@ const getCompanyLS = () => {
     };
 };
 
+const getCompanyAPI = () => {};
+
+const getMessageLS = () => {
+    return localStorage.getItem("ras-message") || "";
+};
+
 function App() {
     const [user, setUser] = useState({});
     const [company, setCompany] = useState({});
-    const [message, setMessage] = useState("Bybs");
+    const [message, setMessage] = useState("");
 
     const initUser = () => {
         const userData = getUserLS();
@@ -55,9 +61,14 @@ function App() {
         setCompany(companyData);
     };
 
+    const initMessage = () => {
+        setMessage(getMessageLS());
+    };
+
     useEffect(() => {
         initUser();
         initCompany();
+        initMessage();
     }, []);
 
     return (

@@ -1,9 +1,10 @@
 import React, {useState} from "react";
-import {Box, Button, Modal} from "@mui/material";
+import {Box, Button, Modal, TextField} from "@mui/material";
 import {Link} from "react-router-dom";
 
 const HomePage = () => {
     const [modalOpen, setModalOpen] = useState(false);
+    const [link, setLink] = useState("");
 
     return (
         <div className="home">
@@ -38,7 +39,26 @@ const HomePage = () => {
                 open={modalOpen}
                 onClose={() => setModalOpen(false)}
             >
-                <Box className="paper">dicks</Box>
+                <Box className="homeModal paper">
+                    <h3>Pildyti apklausa</h3>
+                    <TextField
+                        fullWidth
+                        label="Nuoroda"
+                        className="surveyInput"
+                        value={link}
+                        onChange={e => setLink(e.target.value)}
+                    />
+                    <Button
+                        variant="contained"
+                        fullWidth
+                        className="darkPurpleContainedBtn"
+                        onClick={() => {
+                            window.location = link;
+                        }}
+                    >
+                        Pradeti
+                    </Button>
+                </Box>
             </Modal>
         </div>
     );
