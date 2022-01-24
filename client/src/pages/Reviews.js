@@ -25,7 +25,7 @@ const ReviewsPage = () => {
 
     const getReviewList = (companyId) => {
         axios.get("http://localhost:8040/api/reviews/list/" + companyId).then((response) => {
-            setReviews(response.data.data);
+            setReviews(response.data.data || []);
         });
     };
 

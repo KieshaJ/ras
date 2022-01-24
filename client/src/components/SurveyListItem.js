@@ -1,6 +1,6 @@
 import React from "react";
 import {Badge, Button, ButtonGroup, Card, CardContent, Typography} from "@mui/material";
-import {Bolt, Delete, Download, Edit} from "@mui/icons-material";
+import {Bolt, Delete, Download, Edit, InsertLink} from "@mui/icons-material";
 import axios from "axios";
 
 const SurveyListItemComponent = (props) => {
@@ -52,6 +52,13 @@ const SurveyListItemComponent = (props) => {
                     {/*>*/}
                     {/*    <Bolt/>*/}
                     {/*</Button>*/}
+                    <Button
+                        variant="outlined"
+                        className="darkPurpleBtn"
+                        onClick={() => window.location.pathname = "/survey/" + survey.id}
+                    >
+                        <InsertLink/>
+                    </Button>
                     <Button
                         variant="outlined"
                         className="darkPurpleBtn"

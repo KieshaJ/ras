@@ -32,7 +32,7 @@ const SurveyPageComponent = (props) => {
 
     const getReviewList = () => {
         axios.get("http://localhost:8040/api/reviews/list/" + companyContext.company.id).then((response) => {
-            setReviews(response.data.data);
+            setReviews(response.data.data || []);
         });
     };
 
