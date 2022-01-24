@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Body
 from fastapi.encoders import jsonable_encoder
+from fastapi.responses import FileResponse
 
 from server.database import (
     list_surveys,
@@ -19,7 +20,24 @@ from server.models import (
     ErrorResponseModel
 )
 
+from server.statistics_utils import (
+    create_pdf
+)
+
 router = APIRouter()
+
+
+@router.get("/download/{survey_id}", response_description="Survey report generated")
+async def download_survey_report(survey_id: str):
+    survey = await get_survey(survey_id)
+    await create_pdf(survey)
+    # response = ResponseModel(True, "Survey report returned")
+    # return response.json()
+    return FileResponse(
+        path="reports/test.pdf",
+        media_type="application/octet-stream",
+        filename="test.pdf"
+    )
 
 
 @router.get("/", response_description="Surveys retrieved")

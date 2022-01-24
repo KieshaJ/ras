@@ -149,13 +149,16 @@
 
 .surveyListItem {
     width: 90%;
-    margin: auto;
+    margin: 1rem auto;
     display: flex;
     align-items: center;
 }
 
+.surveyListItemTitle {
+    width: 100%;
+}
+
 .surveyListItemActions {
-    width: 55%;
     text-align: right;
 }
 
@@ -232,6 +235,8 @@
 
 .darkPurpleContainedBtn {
     background-color: #AA14F0 !important;
+    border-color: #AA14F0 !important;
+    color: #EEEEEE !important;
 }
 
 .purpleBtn {
@@ -358,4 +363,24 @@
     padding: 1.5rem 3rem;
     background-color: #EEEEEE;
     margin: 40vh auto 0;
+}
+
+.companyStr {
+    font-size: 24px;
+    width: 100px;
+    margin: auto;
+}
+
+.dashBtns {
+    display: block !important;
+    position: relative;
+}
+
+.dashPadding {
+    padding: 0 !important;
+    text-align: center;
+}
+
+.createBtn {
+    margin-top: 2rem !important;
 }

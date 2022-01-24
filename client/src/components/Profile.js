@@ -18,6 +18,20 @@ const ProfileComponent = () => {
         }
     };
 
+    const logout = () => {
+        localStorage.removeItem("ras-user-token");
+        localStorage.removeItem("ras-user-id");
+        localStorage.removeItem("ras-user-email");
+        localStorage.removeItem("ras-user-name");
+        localStorage.removeItem("ras-user-surname");
+        localStorage.removeItem("ras-user-role");
+
+        localStorage.removeItem("ras-company-id");
+        localStorage.removeItem("ras-company-name");
+
+        window.location.pathname = "/";
+    };
+
     useEffect(() => {
         init();
     }, [userData])
@@ -62,7 +76,10 @@ const ProfileComponent = () => {
                             Valdymo skydas
                         </MenuItem>
                         <MenuItem
-                            onClick={() => setAnchor(null)}
+                            onClick={() => {
+                                setAnchor(null);
+                                logout();
+                            }}
                         >
                             Atsijungti
                         </MenuItem>

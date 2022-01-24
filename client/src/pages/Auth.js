@@ -3,6 +3,7 @@ import axios from "axios";
 import LoginComponent from "../components/Login";
 import RegisterComponent from "../components/Register";
 import {MessageContext} from "../context/MessageContext";
+import {CompanyContext} from "../context/CompanyContext";
 
 const AuthPage = () => {
     const [loginMode, setLoginMode] = useState(true);
@@ -44,10 +45,21 @@ const AuthPage = () => {
         axios.post("http://localhost:8010/api/users/login", credentials).then((response) => {
             const data = response.data.data;
             localStorage.setItem("ras-user-token", data.token);
+            localStorage.setItem("ras-user-id", data.user.id);
             localStorage.setItem("ras-user-email", data.user.email);
             localStorage.setItem("ras-user-name", data.user.name);
             localStorage.setItem("ras-user-surname", data.user.surname);
             localStorage.setItem("ras-user-role", data.user.role);
+
+            getCompany(data.user.id);
+        });
+    };
+
+    const getCompany = (userId) => {
+        axios.get("http://localhost:8020/api/companies/user/" + userId).then((response) => {
+            const data = response.data.data;
+            localStorage.setItem("ras-company-id", data.id);
+            localStorage.setItem("ras-company-name", data.name);
 
             window.location.pathname = "dashboard";
         });
@@ -64,7 +76,7 @@ const AuthPage = () => {
                 headers: {'Content-Type': 'application/json'}
             }
         ).then(() => {
-                        messageContext.setMessage("Ya fookin yeet");
+            messageContext.setMessage("Ya fookin yeet");
             setLoginMode(true);
         });
     };

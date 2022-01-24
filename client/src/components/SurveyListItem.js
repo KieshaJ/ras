@@ -1,6 +1,7 @@
 import React from "react";
 import {Badge, Button, ButtonGroup, Card, CardContent, Typography} from "@mui/material";
-import {Bolt, Delete, Edit} from "@mui/icons-material";
+import {Bolt, Delete, Download, Edit} from "@mui/icons-material";
+import axios from "axios";
 
 const SurveyListItemComponent = (props) => {
     const {
@@ -9,19 +10,34 @@ const SurveyListItemComponent = (props) => {
         editMode
     } = props;
 
+    const downloadPdf = (surveyId) => {
+        axios.get("http://localhost:8030/api/surveys/download/" + surveyId, {
+            responseType: 'blob',
+            headers: {
+                Accept: 'application/octet-stream',
+            }
+        }).then(response => {
+            const blob = new Blob([response.data], {type: "application/pdf"})
+            const link = document.createElement('a')
+            link.href = window.URL.createObjectURL(blob)
+            link.download = 'report_' + surveyId + '.pdf';
+            link.click()
+        });
+    };
+
     return (
         <Card variant="outlined" key={index} className="surveyListItem paper">
-            <CardContent>
+            <CardContent className="surveyListItemTitle">
                 <Typography sx={{fontSize: 24}}>
                     {survey.name}
                 </Typography>
             </CardContent>
-            <CardContent
-            >
-                <Badge className="inactiveBadge">
-                    active
-                </Badge>
-            </CardContent>
+            {/*<CardContent*/}
+            {/*>*/}
+            {/*    <Badge className="inactiveBadge">*/}
+            {/*        active*/}
+            {/*    </Badge>*/}
+            {/*</CardContent>*/}
             <CardContent
                 className="surveyListItemActions"
             >
@@ -29,12 +45,19 @@ const SurveyListItemComponent = (props) => {
                     variant="outlined"
                     aria-label="outlined secondary button group"
                 >
+                    {/*<Button*/}
+                    {/*    onClick={() => {*/}
+                    {/*    }}*/}
+                    {/*    className="darkPurpleBtn"*/}
+                    {/*>*/}
+                    {/*    <Bolt/>*/}
+                    {/*</Button>*/}
                     <Button
-                        onClick={() => {
-                        }}
+                        variant="outlined"
                         className="darkPurpleBtn"
+                        onClick={() => downloadPdf(survey.id)}
                     >
-                        <Bolt/>
+                        <Download/>
                     </Button>
                     <Button
                         onClick={() => editMode(survey)}

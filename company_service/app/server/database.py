@@ -29,6 +29,15 @@ async def get_company(company_id: str) -> dict:
         return await company_helper(company)
 
 
+async def get_company_by_user(user_id: str) -> dict:
+    company = await company_collection.find_one({"$or": [
+        {"ownerId": user_id},
+        {"workerIds": user_id}
+    ]})
+    if company:
+        return await company_helper(company)
+
+
 async def add_company(company_data: dict) -> dict:
     company = await company_collection.insert_one(company_data)
     new_company = await company_collection.find_one({"_id": company.inserted_id})

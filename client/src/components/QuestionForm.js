@@ -14,15 +14,15 @@ const QuestionFormComponent = (props) => {
 
     const questionTypes = [
         {
-            label: "SINGLE_CHOICE",
+            label: "Vienas pasirinkimas",
             value: "SINGLE_CHOICE"
         },
         {
-            label: "MULTI_CHOICE",
+            label: "Keli pasirinkimai",
             value: "MULTI_CHOICE"
         },
         {
-            label: "BOOLEAN",
+            label: "Loginis",
             value: "BOOLEAN"
         }
     ];
@@ -33,6 +33,20 @@ const QuestionFormComponent = (props) => {
         const questionCopy = sectionCopy.questions[qIndex];
 
         questionCopy[e.target.name] = e.target.value;
+        surveyCopy.sections[sIndex].questions[qIndex] = questionCopy;
+        setSurvey({
+            ...surveyCopy
+        });
+    };
+
+    const addAnswer = (sIndex, qIndex) => {
+        const surveyCopy = survey;
+        const sectionCopy = surveyCopy.sections[sIndex];
+        const questionCopy = sectionCopy.questions[qIndex];
+
+        questionCopy.answers.push({
+            title: ""
+        });
         surveyCopy.sections[sIndex].questions[qIndex] = questionCopy;
         setSurvey({
             ...surveyCopy
@@ -97,6 +111,7 @@ const QuestionFormComponent = (props) => {
             <Button
                 variant="outlined"
                 className="purpleBtn"
+                onClick={() => addAnswer(sIndex, qIndex)}
             >
                 <Add/>Pridėti atsakymą
             </Button>

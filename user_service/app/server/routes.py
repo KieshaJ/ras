@@ -64,6 +64,7 @@ async def login(login_data: LoginModel = Body(...)):
     user = await get_user_by_email(login_data.email)
     if user and verify_password(login_data.password, user["password"]):
         user_data = TokenData(
+            user["id"],
             user["name"],
             user["surname"],
             user["email"],

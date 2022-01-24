@@ -24,6 +24,29 @@ const SectionComponent = (props) => {
         });
     };
 
+    const addQuestion = (sIndex) => {
+        const surveyCopy = survey;
+        const sectionCopy = surveyCopy.sections[sIndex];
+
+        sectionCopy.questions.push({
+            title: "",
+            description: "",
+            answers: []
+        });
+        surveyCopy.sections[sIndex] = sectionCopy;
+        setSurvey({
+            ...surveyCopy
+        });
+    };
+
+    const removeSection = (sIndex) => {
+        const surveyCopy = survey;
+        surveyCopy.sections.splice(sIndex, 1);
+        setSurvey({
+            ...surveyCopy
+        });
+    };
+
     return (
         <Card
             key={`section-${sIndex}`}
@@ -45,13 +68,14 @@ const SectionComponent = (props) => {
                         variant="outlined"
                         className="sectionBtns"
                     >
-                        <Button
-                            className="purpleBtn"
-                        >
-                            <Add/>
-                        </Button>
+                        {/*<Button*/}
+                        {/*    className="purpleBtn"*/}
+                        {/*>*/}
+                        {/*    <Add/>*/}
+                        {/*</Button>*/}
                         <Button
                             className="blackBtn"
+                            onClick={() => removeSection(sIndex)}
                         >
                             <Delete/>
                         </Button>
@@ -96,6 +120,7 @@ const SectionComponent = (props) => {
                         <Button
                             variant="outlined"
                             className="purpleBtn"
+                            onClick={() => addQuestion(sIndex)}
                         >
                             <Add/>Pridėti klausimą
                         </Button>

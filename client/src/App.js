@@ -29,9 +29,8 @@ const getUserAPI = () => {
 
 const getCompanyLS = () => {
     return {
-        name: localStorage.getItem("ras-company-name"),
-        ownerId: localStorage.getItem("ras-company-ownerId"),
-        workerIds: JSON.parse(localStorage.getItem("ras-company-workerIds"))
+        id: localStorage.getItem("ras-company-id"),
+        name: localStorage.getItem("ras-company-name")
     };
 };
 

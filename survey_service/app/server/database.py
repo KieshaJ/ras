@@ -209,6 +209,14 @@ async def update_survey_statistic(survey_id: str) -> bool:
     return False
 
 
+async def get_survey_statistic(survey_id: str) -> dict:
+    statistic = await survey_statistics_collection.find_one({"survey_id": survey_id})
+    return {
+        "survey_id": statistic["survey_id"],
+        "submitted": statistic["submitted"]
+    }
+
+
 async def add_answer_statistic(answer_id: str):
     statistic = {
         "answer_id": answer_id,
@@ -227,3 +235,11 @@ async def update_answer_statistic(answer_id: str) -> bool:
     if updated_statistic:
         return True
     return False
+
+
+async def get_answer_statistic(answer_id: str) -> dict:
+    statistic = await answer_statistics_collection.find_one({"answer_id": answer_id})
+    return {
+        "answer_id": statistic["answer_id"],
+        "submitted": statistic["submitted"]
+    }

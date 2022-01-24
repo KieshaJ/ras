@@ -8,12 +8,25 @@ const SurveyFormComponent = (props) => {
         survey,
         setSurvey,
         activeSection,
-        setActiveSection
+        setActiveSection,
+        submit
     } = props;
 
     const handleChange = (e) => {
         const surveyCopy = survey;
         surveyCopy[e.target.name] = e.target.value;
+        setSurvey({
+            ...surveyCopy
+        });
+    };
+
+    const addSection = () => {
+        const surveyCopy = survey;
+        surveyCopy.sections.push({
+            name: "",
+            description: "",
+            questions: []
+        });
         setSurvey({
             ...surveyCopy
         });
@@ -46,6 +59,7 @@ const SurveyFormComponent = (props) => {
                 <Button
                     variant="outlined"
                     className="darkPurpleBtn"
+                    onClick={() => addSection()}
                 >
                     <Add/>Pridėti skyrių
                 </Button>
@@ -63,6 +77,16 @@ const SurveyFormComponent = (props) => {
                     />
                 );
             })}
+            <div className="surveyInputs">
+                <Button
+                    variant="outlined"
+                    fullWidth
+                    className="darkPurpleContainedBtn createBtn"
+                    onClick={() => submit()}
+                >
+                    Saugoti
+                </Button>
+            </div>
         </Box>
     );
 };

@@ -2,6 +2,7 @@ import React, {useState} from "react";
 import SurveyPageComponent from "../components/SurveyPage";
 import CompanyPageComponent from "../components/CompanyPage";
 import ReportPageComponent from "../components/ReportPage";
+import axios from "axios";
 
 const DashboardPage = () => {
     const [selectedPage, setSelectedPage] = useState("survey");
@@ -10,7 +11,6 @@ const DashboardPage = () => {
         <div>
             {selectedPage === "survey" ?
                 <SurveyPageComponent
-                    selectedPage={selectedPage}
                     setSelectedPage={setSelectedPage}
                 />
                 :
@@ -18,7 +18,6 @@ const DashboardPage = () => {
             }
             {selectedPage === "company" ?
                 <CompanyPageComponent
-                    selectedPage={selectedPage}
                     setSelectedPage={setSelectedPage}
                 />
                 :
@@ -26,7 +25,6 @@ const DashboardPage = () => {
             }
             {selectedPage === "report" ?
                 <ReportPageComponent
-                    selectedPage={selectedPage}
                     setSelectedPage={setSelectedPage}
                 />
                 :

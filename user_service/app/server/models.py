@@ -54,12 +54,14 @@ class LoginModel(BaseModel):
 
 
 class TokenData:
+    id: str
     name: str
     surname: str
     email: str
     role: int
 
-    def __init__(self, name, surname, email, role):
+    def __init__(self, id, name, surname, email, role):
+        self.id = id
         self.name = name
         self.surname = surname
         self.email = email

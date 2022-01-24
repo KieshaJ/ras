@@ -26,7 +26,7 @@ const AnswerFormComponent = (props) => {
 
     return (
         <div
-            className="ml-1"
+            className="ml-2"
         >
             <div
                 key={`answer-${aIndex}`}

@@ -6,6 +6,7 @@ from server.database import (
     add_company,
     update_company,
     get_company,
+    get_company_by_user,
     delete_company
 )
 
@@ -29,6 +30,20 @@ async def get_company_data_list():
 @router.get("/{id}", response_description="Company retrieved")
 async def get_company_data(id: str):
     company = await get_company(id)
+    if company:
+        response = ResponseModel(company, "Company returned")
+    else:
+        response = ErrorResponseModel(
+            "An error occurred",
+            404,
+            "Company with ID: {} does not exist".format(id)
+        )
+    return response.json()
+
+
+@router.get("/user/{user_id}", response_description="Company retrieved")
+async def get_company_data_by_user(user_id: str):
+    company = await get_company_by_user(user_id)
     if company:
         response = ResponseModel(company, "Company returned")
     else:
