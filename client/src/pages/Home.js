@@ -40,7 +40,7 @@ const HomePage = () => {
                 onClose={() => setModalOpen(false)}
             >
                 <Box className="homeModal paper">
-                    <h3>Pildyti apklausa</h3>
+                    <h3>Pildyti apklausą</h3>
                     <TextField
                         fullWidth
                         label="Nuoroda"
@@ -56,7 +56,7 @@ const HomePage = () => {
                             window.location = link;
                         }}
                     >
-                        Pradeti
+                        Pradėti
                     </Button>
                 </Box>
             </Modal>

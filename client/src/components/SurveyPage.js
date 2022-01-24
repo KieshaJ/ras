@@ -8,6 +8,7 @@ import {
 import SurveyListItemComponent from "./SurveyListItem";
 import SurveyFormComponent from "./SurveyForm";
 import {CompanyContext} from "../context/CompanyContext";
+import {MessageContext} from "../context/MessageContext";
 
 
 const SurveyPageComponent = (props) => {
@@ -20,6 +21,7 @@ const SurveyPageComponent = (props) => {
     const [reviews, setReviews] = useState([]);
 
     const companyContext = useContext(CompanyContext);
+    const messageContext = useContext(MessageContext);
 
     const getSurveyList = () => {
         axios.get("http://localhost:8030/api/surveys", {}).then((response) => {
@@ -53,6 +55,7 @@ const SurveyPageComponent = (props) => {
         axios.post("http://localhost:8030/api/surveys", survey).then(response => {
             setSurveys([...surveys, response.data.data]);
             setMode(0);
+            messageContext.setMessage("Išsaugota sėkmingai")
         });
     };
 
@@ -78,7 +81,7 @@ const SurveyPageComponent = (props) => {
                     <hr/>
 
                     <div>
-                        <h3>Atsiliepimu sarasas</h3>
+                        <h3>Atsiliepimų sąrašas</h3>
 
                         {reviews.map((review => (
                             <div key={review.id} className="reviewItem paper">

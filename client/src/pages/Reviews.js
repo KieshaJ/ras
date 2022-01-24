@@ -40,7 +40,7 @@ const ReviewsPage = () => {
                 rating: 0
             });
             localStorage.setItem("ras-message", "Issaugota sekmingai");
-            messageContext.setMessage("Issaugota sekmingai");
+            messageContext.setMessage("Išsaugota sėkmingai");
         });
     };
 
@@ -105,11 +105,11 @@ const ReviewsPage = () => {
                             className="darkPurpleContainedBtn"
                             onClick={() => postReview()}
                         >
-                            Palikti atsiliepima
+                            Palikti atsiliepimą
                         </Button>
                     </div>
                     <div>
-                        <h3>Atsiliepimu sarasas</h3>
+                        <h3>Atsiliepimų sąrašas</h3>
 
                         {reviews.map((review => (
                             <div key={review.id} className="reviewItem paper">
@@ -133,7 +133,7 @@ const ReviewsPage = () => {
                     fullWidth
                     name="search"
                     className="surveyInput"
-                    label="Paieska"
+                    label="Paieška"
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
                 />

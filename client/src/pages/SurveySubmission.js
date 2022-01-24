@@ -1,13 +1,16 @@
-import React, {useEffect, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import {useParams} from "react-router-dom";
 import axios from "axios";
 import SurveySubmissionWizardComponent from "../components/SurveySubmissionWizard";
+import {MessageContext} from "../context/MessageContext";
 
 const SurveySubmissionPage = () => {
     const [survey, setSurvey] = useState({});
     const [activeSection, setActiveSection] = useState(0);
 
     const {surveyId} = useParams();
+
+    const messageContext = useContext(MessageContext);
 
     const getSurvey = () => {
         axios.get("http://localhost:8030/api/surveys/" + surveyId, {}).then((response) => {
@@ -49,10 +52,8 @@ const SurveySubmissionPage = () => {
                 headers: {'Content-Type': 'application/json'}
             }
         ).then(response => {
-            console.log(response);
+            messageContext.setMessage("Išsaugota sėkmingai")
         });
-
-        console.log(data);
     };
 
     useEffect(() => {

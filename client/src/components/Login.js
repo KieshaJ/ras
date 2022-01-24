@@ -21,7 +21,7 @@ const LoginComponent = (props) => {
                 name="email"
                 fullWidth
                 className="surveyInput"
-                label="El. pastas"
+                label="El. paštas"
                 value={credentials.email}
                 onChange={(e) => handleChange(e, credentials, setCredentials)}
             />
@@ -30,7 +30,7 @@ const LoginComponent = (props) => {
                 fullWidth
                 className="surveyInput"
                 type="password"
-                label="Slaptazodis"
+                label="Slaptažodis"
                 value={credentials.password}
                 onChange={(e) => handleChange(e, credentials, setCredentials)}
             />
@@ -50,7 +50,7 @@ const LoginComponent = (props) => {
                         className="darkPurpleBtn"
                         onClick={() => setLoginMode(false)}
                     >
-                        Registruokites cia
+                        Registruokitės čia
                     </a>
                 </div>
             </div>

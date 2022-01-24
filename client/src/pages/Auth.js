@@ -51,6 +51,7 @@ const AuthPage = () => {
             localStorage.setItem("ras-user-surname", data.user.surname);
             localStorage.setItem("ras-user-role", data.user.role);
 
+            messageContext.setMessage("Prisijungta sėkmingai")
             getCompany(data.user.id);
         });
     };
@@ -78,6 +79,7 @@ const AuthPage = () => {
         ).then(() => {
             messageContext.setMessage("Ya fookin yeet");
             setLoginMode(true);
+            messageContext.setMessage("Registracija sėkminga");
         });
     };
 

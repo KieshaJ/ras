@@ -37,7 +37,7 @@ const RegisterComponent = (props) => {
                     name="surname"
                     fullWidth
                     className="surveyInput"
-                    label="Pavarde"
+                    label="Pavardė"
                     value={newUser.surname}
                     onChange={(e) => handleChange(e, newUser, setNewUser)}
                 />
@@ -45,7 +45,7 @@ const RegisterComponent = (props) => {
                     name="email"
                     fullWidth
                     className="surveyInput"
-                    label="El. pastas"
+                    label="El. paštas"
                     value={newUser.email}
                     onChange={(e) => handleChange(e, newUser, setNewUser)}
                 />
@@ -54,7 +54,7 @@ const RegisterComponent = (props) => {
                     fullWidth
                     className="surveyInput"
                     type="password"
-                    label="Slaptazodis"
+                    label="Slaptažodis"
                     value={newUser.password}
                     onChange={(e) => handleChange(e, newUser, setNewUser)}
                 />
@@ -80,7 +80,7 @@ const RegisterComponent = (props) => {
                             name="companyName"
                             fullWidth
                             className="surveyInput"
-                            label="Imones pavadinimas"
+                            label="Įmonės pavadinimas"
                             value={newUser.company.name}
                             onChange={(e) => handleChange(e, newUser, setNewUser)}
                         />
@@ -97,13 +97,13 @@ const RegisterComponent = (props) => {
                     Registruotis
                 </Button>
                 <div className="textLink">
-                    <div>Jau turite paskyra? </div>
+                    <div>Jau turite paskyrą? </div>
                     <a
                         href="#"
                         className="darkPurpleBtn"
                         onClick={() => setLoginMode(true)}
                     >
-                        Prisijunkite cia
+                        Prisijunkite čia
                     </a>
                 </div>
             </div>
