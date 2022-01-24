@@ -55,6 +55,7 @@ const SurveyPageComponent = (props) => {
         axios.post("http://localhost:8030/api/surveys", survey).then(response => {
             setSurveys([...surveys, response.data.data]);
             setMode(0);
+            localStorage.setItem("ras-message", "Išsaugota sėkmingai");
             messageContext.setMessage("Išsaugota sėkmingai")
         });
     };

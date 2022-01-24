@@ -52,6 +52,7 @@ const SurveySubmissionPage = () => {
                 headers: {'Content-Type': 'application/json'}
             }
         ).then(response => {
+            localStorage.setItem("ras-message", "Išsaugota sėkmingai");
             messageContext.setMessage("Išsaugota sėkmingai")
         });
     };
