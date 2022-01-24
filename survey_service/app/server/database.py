@@ -22,11 +22,11 @@ async def survey_helper(survey: dict) -> dict:
 
     return {
         "id": str(survey["_id"]),
-        # "company_id": survey["company_id"],
+        "company_id": survey["company_id"],
         "name": survey["name"],
         "description": survey["description"],
         "sections": sections,
-        # "active": survey["active"]
+        "active": survey["active"]
     }
 
 

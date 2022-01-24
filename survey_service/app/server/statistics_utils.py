@@ -19,7 +19,7 @@ async def create_pdf(survey: dict):
     pdf.cell(75, 10, survey["name"], 0, 2, 'C')
     pdf.cell(90, 10, " ", 0, 2, 'C')
     pdf.cell(-40)
-    pdf.cell(75, 10, "Iš viso užpildė: %s" % str(survey_stat["submitted"]), 0, 2, 'C')
+    pdf.cell(75, 10, "Is viso uzpilde: %s" % str(survey_stat["submitted"]), 0, 2, 'C')
     pdf.cell(90, 10, " ", 0, 2, 'C')
 
     for s in survey["sections"]:
@@ -29,7 +29,7 @@ async def create_pdf(survey: dict):
             pdf.cell(90, 10, " ", 0, 2, 'C')
 
             pdf.cell(80, 10, 'Atsakymas', 1, 0, 'C')
-            pdf.cell(80, 10, 'Pasirinkimų sk.', 1, 2, 'C')
+            pdf.cell(80, 10, 'Pasirinkimu sk.', 1, 2, 'C')
             pdf.cell(-80)
             pdf.set_font('arial', '', 12)
             for a in q["answers"]:
