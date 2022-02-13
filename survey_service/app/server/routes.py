@@ -2,7 +2,7 @@ from fastapi import APIRouter, Body
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import FileResponse
 
-from server.database import (
+from .database import (
     list_surveys,
     get_survey,
     add_survey,
@@ -12,7 +12,7 @@ from server.database import (
     update_answer_statistic
 )
 
-from server.models import (
+from .models import (
     SurveyModel,
     UpdateSurveyModel,
     SurveySubmitModel,
@@ -20,7 +20,7 @@ from server.models import (
     ErrorResponseModel
 )
 
-from server.statistics_utils import (
+from .statistics_utils import (
     create_pdf
 )
 
@@ -50,9 +50,9 @@ async def list_survey_data():
     return response.json()
 
 
-@router.get("/{id}", response_description="Survey retrieved")
-async def get_survey_data(id: str):
-    survey = await get_survey(id)
+@router.get("/{survey_id}", response_description="Survey retrieved")
+async def get_survey_data(survey_id: str):
+    survey = await get_survey(survey_id)
     if survey:
         response = ResponseModel(survey, "Survey returned")
     else:
@@ -72,37 +72,37 @@ async def add_survey_data(survey_data: SurveyModel = Body(...)):
     return response.json()
 
 
-@router.put("/{id}", response_description="Survey data updated")
-async def update_survey_data(id: str, req: UpdateSurveyModel = Body(...)):
+@router.put("/{survey_id}", response_description="Survey data updated")
+async def update_survey_data(survey_id: str, req: UpdateSurveyModel = Body(...)):
     req = {x: y for x, y in req.dict().items() if y is not None}
-    updated_survey = await update_survey(id, req)
+    updated_survey = await update_survey(survey_id, req)
     if updated_survey:
         response = ResponseModel(
-            "Survey with ID: {} updated successfully".format(id),
+            "Survey with ID: {} updated successfully".format(survey_id),
             "Survey updated successfully"
         )
     else:
         response = ErrorResponseModel(
-            "An error occured",
+            "An error occurred",
             404,
             "There was an error updating the survey data"
         )
     return response.json()
 
 
-@router.delete("/{id}", response_description="Survey deleted from database")
-async def delete_survey_data(id: str):
-    deleted_survey = await delete_survey(id)
+@router.delete("/{survey_id}", response_description="Survey deleted from database")
+async def delete_survey_data(survey_id: str):
+    deleted_survey = await delete_survey(survey_id)
     if deleted_survey:
         response = ResponseModel(
-            "Survey with ID: {} deleted successfully".format(id),
+            "Survey with ID: {} deleted successfully".format(survey_id),
             "Survey deleted successfully"
         )
     else:
         response = ErrorResponseModel(
-            "An error occured",
+            "An error occurred",
             404,
-            "Survey with ID: {} does not exist".format(id)
+            "Survey with ID: {} does not exist".format(survey_id)
         )
     return response.json()
 
@@ -117,4 +117,3 @@ async def submit_survey(survey_id: str, data: SurveySubmitModel = Body(...)):
         "Survey submitted successfully"
     )
     return response.json()
-

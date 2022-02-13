@@ -130,12 +130,12 @@ async def add_sections(section_data: dict) -> list[dict]:
     return new_sections
 
 
-async def update_section(section_data: dict):
-    pass
+# async def update_section(section_data: dict):
+#     pass
 
 
-async def delete_section():
-    pass
+# async def delete_section():
+#     pass
 
 
 async def list_surveys():
@@ -167,14 +167,14 @@ async def add_survey(survey_data: dict) -> dict:
     return await survey_helper(new_survey)
 
 
-async def update_survey(survey_id: str, data: dict) -> bool:
-    if len(data) < 1:
+async def update_survey(survey_id: str, survey_data: dict) -> bool:
+    if len(survey_data) < 1:
         return False
     survey = survey_collection.find_one({"_id": ObjectId(survey_id)})
     if survey:
         updated_survey = await survey_collection.update_one(
             {"_id": ObjectId(survey_id)},
-            {"$set": data}
+            {"$set": survey_data}
         )
         if updated_survey:
             return True

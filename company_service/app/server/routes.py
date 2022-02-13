@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Body
 from fastapi.encoders import jsonable_encoder
 
-from server.database import (
+from .database import (
     list_companies,
     add_company,
     update_company,
@@ -10,7 +10,7 @@ from server.database import (
     delete_company
 )
 
-from server.models import (
+from .models import (
     CompanyModel,
     UpdateCompanyModel,
     ResponseModel,
@@ -27,16 +27,16 @@ async def get_company_data_list():
     return response.json()
 
 
-@router.get("/{id}", response_description="Company retrieved")
-async def get_company_data(id: str):
-    company = await get_company(id)
+@router.get("/{company_id}", response_description="Company retrieved")
+async def get_company_data(company_id: str):
+    company = await get_company(company_id)
     if company:
         response = ResponseModel(company, "Company returned")
     else:
         response = ErrorResponseModel(
             "An error occurred",
             404,
-            "Company with ID: {} does not exist".format(id)
+            "Company with ID: {} does not exist".format(company_id)
         )
     return response.json()
 
@@ -50,7 +50,7 @@ async def get_company_data_by_user(user_id: str):
         response = ErrorResponseModel(
             "An error occurred",
             404,
-            "Company with ID: {} does not exist".format(id)
+            "User not associated with any company"
         )
     return response.json()
 
@@ -63,35 +63,35 @@ async def add_company_data(company_data: CompanyModel = Body(...)):
     return response.json()
 
 
-@router.put("/{id}", response_description="Company data updated")
-async def update_comapny_data(id: str, company_data: UpdateCompanyModel = Body(...)):
+@router.put("/{company_id}", response_description="Company data updated")
+async def update_company_data(company_id: str, company_data: UpdateCompanyModel = Body(...)):
     req = {x: y for x, y in company_data.dict().items() if y is not None}
-    updated_company = await update_company(id, req)
+    updated_company = await update_company(company_id, req)
     if updated_company:
         response = ResponseModel(
-            "Company with ID: {} updated successfully".format(id),
+            "Company with ID: {} updated successfully".format(company_id),
             "Company updated successfully"
         )
     else:
         response = ErrorResponseModel(
-            "An error occured",
+            "An error occurred",
             404,
             "There was an error updating the company data"
         )
     return response.json()
 
 
-@router.delete("/{id}", response_description="Company deleted from database")
-async def delete_company_data(id: str):
-    deleted_company = await delete_company(id)
+@router.delete("/{company_id}", response_description="Company deleted from database")
+async def delete_company_data(company_id: str):
+    deleted_company = await delete_company(company_id)
     if deleted_company:
         response = ResponseModel(
-            "Company with ID: {} deleted successfully".format(id),
+            "Company with ID: {} deleted successfully".format(company_id),
             "Company deleted successfully"
         )
     else:
         response = ErrorResponseModel(
-            "An error occured",
+            "An error occurred",
             404,
             "Company with ID: {} does not exist".format(id)
         )

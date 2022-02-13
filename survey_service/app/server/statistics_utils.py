@@ -1,6 +1,5 @@
 from fpdf import FPDF
-from server.database import (
-    get_survey,
+from .database import (
     get_survey_statistic,
     get_answer_statistic
 )

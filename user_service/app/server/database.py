@@ -59,8 +59,8 @@ async def list_users():
     return users
 
 
-async def get_user(id: str) -> dict:
-    user = await user_collection.find_one({"_id": ObjectId(id)})
+async def get_user(user_id: str) -> dict:
+    user = await user_collection.find_one({"_id": ObjectId(user_id)})
     if user:
         return user_helper(user)
 
@@ -80,23 +80,23 @@ async def add_user(data: dict) -> dict:
     return user_helper(new_user)
 
 
-async def update_user(id: str, data: dict):
-    if len(data) < 1:
+async def update_user(user_id: str, user_data: dict):
+    if len(user_data) < 1:
         return False
-    user = user_collection.find_one({"_id": ObjectId(id)})
+    user = user_collection.find_one({"_id": ObjectId(user_id)})
     if user:
         updated_user = await user_collection.update_one(
             {"_id": ObjectId(id)},
-            {"$set": data}
+            {"$set": user_data}
         )
         if updated_user:
             return True
     return False
 
 
-async def delete_user(id: str):
-    user = await user_collection.find_one({"_id": ObjectId(id)})
+async def delete_user(user_id: str):
+    user = await user_collection.find_one({"_id": ObjectId(user_id)})
     if user:
-        await user_collection.delete_one({"_id": ObjectId(id)})
+        await user_collection.delete_one({"_id": ObjectId(user_id)})
         return True
     return False

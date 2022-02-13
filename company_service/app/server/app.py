@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from server.routes import router as CompanyRouter
+from .routes import router
 from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
@@ -16,4 +16,4 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.include_router(CompanyRouter, tags=["Companies"], prefix="/api/companies")
+app.include_router(router, tags=["Companies"], prefix="/api/companies")

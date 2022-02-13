@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Body
 from fastapi.encoders import jsonable_encoder
 
-from server.database import (
+from .database import (
     list_reviews,
     add_review,
     update_review,
@@ -9,7 +9,7 @@ from server.database import (
     delete_review
 )
 
-from server.models import (
+from .models import (
     ReviewModel,
     UpdateReviewModel,
     ResponseModel,
@@ -33,16 +33,16 @@ async def get_review_data_list(company_id: str):
     return response.json()
 
 
-@router.get("/{id}", response_description="Review retrieved")
-async def get_review_data(id: str):
-    review = await get_review(id)
+@router.get("/{review_id}", response_description="Review retrieved")
+async def get_review_data(review_id: str):
+    review = await get_review(review_id)
     if review:
         response = ResponseModel(review, "Review returned")
     else:
         response = ErrorResponseModel(
             "An error occurred",
             404,
-            "Review with ID: {} does not exist".format(id)
+            "Review with ID: {} does not exist".format(review_id)
         )
     return response.json()
 
@@ -55,36 +55,36 @@ async def add_review_data(review_data: ReviewModel = Body(...)):
     return response.json()
 
 
-@router.put("/{id}", response_description="Review data updated")
-async def update_review_data(id: str, review_data: UpdateReviewModel = Body(...)):
+@router.put("/{review_id}", response_description="Review data updated")
+async def update_review_data(review_id: str, review_data: UpdateReviewModel = Body(...)):
     req = {x: y for x, y in review_data.dict().items() if y is not None}
-    updated_review = await update_review(id, req)
+    updated_review = await update_review(review_id, req)
     if updated_review:
         response = ResponseModel(
-            "Review with ID: {} updated successfully".format(id),
+            "Review with ID: {} updated successfully".format(review_id),
             "Review updated successfully"
         )
     else:
         response = ErrorResponseModel(
-            "An error occured",
+            "An error occurred",
             404,
             "There was an error updating the review data"
         )
     return response.json()
 
 
-@router.delete("/{id}", response_description="Review deleted from database")
-async def delete_review_data(id: str):
-    deleted_review = await delete_review(id)
+@router.delete("/{review_id}", response_description="Review deleted from database")
+async def delete_review_data(review_id: str):
+    deleted_review = await delete_review(review_id)
     if deleted_review:
         response = ResponseModel(
-            "Review with ID: {} deleted successfully".format(id),
+            "Review with ID: {} deleted successfully".format(review_id),
             "Review deleted successfully"
         )
     else:
         response = ErrorResponseModel(
-            "An error occured",
+            "An error occurred",
             404,
-            "Review with ID: {} does not exist".format(id)
+            "Review with ID: {} does not exist".format(review_id)
         )
     return response.json()

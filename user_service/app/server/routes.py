@@ -2,7 +2,7 @@ from fastapi import APIRouter, Body
 from fastapi.encoders import jsonable_encoder
 import requests
 
-from server.database import (
+from .database import (
     list_users,
     get_user,
     get_user_by_email,
@@ -13,15 +13,14 @@ from server.database import (
     delete_user
 )
 
-from server.models import (
+from .models import (
     UserModel,
     UpdateUserModel,
     LoginModel,
     TokenData,
     Token,
     ResponseModel,
-    ErrorResponseModel,
-    Role
+    ErrorResponseModel
 )
 
 router = APIRouter()
@@ -58,7 +57,6 @@ async def register(user_data: UserModel = Body(...)):
         )
 
 
-
 @router.post("/login", response_description="User logged in")
 async def login(login_data: LoginModel = Body(...)):
     user = await get_user_by_email(login_data.email)
@@ -85,7 +83,6 @@ async def login(login_data: LoginModel = Body(...)):
             "Invalid email or password"
         )
     return response.json()
-
 
 
 @router.get("/", response_description="Users retrieved")
@@ -136,8 +133,7 @@ async def delete_user_data(user_id: str):
             "User deleted successfully"
         )
     return ErrorResponseModel(
-        "An error occured",
+        "An error occurred",
         404,
         "User with ID: {} does not exist".format(user_id)
     )
-
